@@ -301,7 +301,7 @@ namespace pkengine
         {
             const unsigned int CurrIndex = StartIndex + i;
             VertexData[CurrIndex].Position = *(MeshComponent->GetOwner()->GetTransform()) * CMeshComponent::BaseMeshVertices[i];
-            VertexData[CurrIndex].Color = FVector3(1.0f, 0.0f, 0.0f);
+            VertexData[CurrIndex].Color = MeshComponent->Color;
         }
     }
 }

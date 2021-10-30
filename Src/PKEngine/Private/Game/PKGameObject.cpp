@@ -31,7 +31,7 @@ namespace pkengine
 		delete Transform;
 	}
 
-	CMeshComponent* CGameObject::AddMesh(EMeshType MeshType)
+	CMeshComponent* CGameObject::AddMesh(EMeshType MeshType, const FVector3& Color)
 	{
 		if (MeshComponent != nullptr)
 		{
@@ -40,6 +40,11 @@ namespace pkengine
 		}
 
 		MeshComponent = CRenderer::RegisterMesh(this);
+		if (MeshComponent != nullptr)
+		{
+			MeshComponent->SetColor(Color);
+		}
+
 		return MeshComponent;
 	}
 

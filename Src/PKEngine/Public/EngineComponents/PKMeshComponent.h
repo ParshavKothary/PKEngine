@@ -18,11 +18,14 @@ namespace pkengine
 			RendererIndex = -1;
 		}
 
-	protected:
-
-		unsigned int RendererIndex;
+		inline void SetColor(const FVector3& InColor) { Color = InColor; }
+		inline FVector3 GetColor() const { return Color; }
 
 	private:
+
+		FVector3 Color;
+
+		unsigned int RendererIndex;
 
 		static const unsigned int NumVertices = 6;
 		static const std::array<FVector3, NumVertices> BaseMeshVertices;

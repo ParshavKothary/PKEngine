@@ -25,7 +25,7 @@ namespace pkengine
 
 		inline FTransform* GetTransform() const { return Transform; }
 
-		CMeshComponent* AddMesh(EMeshType MeshType);
+		CMeshComponent* AddMesh(EMeshType MeshType, const FVector3& Color);
 
 		template<typename T>
 		T* AddBehaviour();
