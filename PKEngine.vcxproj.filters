@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Src">
+      <UniqueIdentifier>{44ce1877-2fc3-4573-bbb1-70665763eada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\External">
+      <UniqueIdentifier>{2f627bcc-8257-4e39-8c3a-5ddcec914d85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\PKEngine">
+      <UniqueIdentifier>{0bd6bb21-d5d9-454e-9083-865b3968dad3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\External\Private">
+      <UniqueIdentifier>{375d426c-c2ac-41b9-bed7-b9833fcc7be4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\PKEngine\Private">
+      <UniqueIdentifier>{0ad428f8-e4fe-40c5-881f-38cd9a3488ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\PKEngine\Public">
+      <UniqueIdentifier>{ae74f4c4-9686-495b-9fc4-f6c7c3ec41c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\External\Public">
+      <UniqueIdentifier>{66362834-7b24-4e2a-ae22-1c57393ed074}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\External\Public\glad">
+      <UniqueIdentifier>{6da0fc47-5522-456d-8eff-362f1741f1ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\External\Public\GLFW">
+      <UniqueIdentifier>{fa98b66b-82fe-421e-bcdc-10b73125313b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\External\Public\KHR">
+      <UniqueIdentifier>{0354c617-2908-4103-a6c3-071421b1a6bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\External\Private\glad">
+      <UniqueIdentifier>{eaf010e8-19ef-4925-926c-357d3af08edf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\PKEngine\Public\Shaders">
+      <UniqueIdentifier>{9ad796cc-d66f-4571-bb3e-0866e152e697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\PKEngine\Public\Core">
+      <UniqueIdentifier>{eb57fa45-4715-4b6b-9efb-3164bb3506f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\PKEngine\Private\Core">
+      <UniqueIdentifier>{0d94ed98-e32f-4857-b3a7-29eb235ac812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\PKEngine\Public\EngineComponents">
+      <UniqueIdentifier>{47cea800-957d-4d88-a590-237c1d3246ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\PKEngine\Private\EngineComponents">
+      <UniqueIdentifier>{80fe6325-fb40-4dc3-9319-add9a3183f4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\PKEngine\Public\Systems">
+      <UniqueIdentifier>{c42a0609-327b-4b84-89ab-136f77b091fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\PKEngine\Public\Game">
+      <UniqueIdentifier>{fc856a47-29d3-4d78-91c3-82f1b0bf5768}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\PKEngine\Private\Game">
+      <UniqueIdentifier>{27e042f1-cf34-41fa-bf51-2c840b580cf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\PKEngine\Private\Systems">
+      <UniqueIdentifier>{d3f5b90b-3923-489f-9bbb-69a9e879e833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\PongSample">
+      <UniqueIdentifier>{ffef5c15-5a19-4005-9c12-2ff3854ce6f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\PongSample\Public">
+      <UniqueIdentifier>{0f3eb30c-fd50-4fa6-96f0-5228b05a6ced}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\PongSample\Private">
+      <UniqueIdentifier>{1f2668e4-9900-40f0-a0ad-5df09fa3e743}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\External\Private\glad\glad.c">
+      <Filter>Src\External\Private\glad</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Main.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PKEngine\Private\Core\PKEngine.cpp">
+      <Filter>Src\PKEngine\Private\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PKEngine\Private\EngineComponents\PKMeshComponent.cpp">
+      <Filter>Src\PKEngine\Private\EngineComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PKEngine\Private\Game\PKGame.cpp">
+      <Filter>Src\PKEngine\Private\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PKEngine\Private\Game\PKGameObject.cpp">
+      <Filter>Src\PKEngine\Private\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PKEngine\Private\Systems\PKInput.cpp">
+      <Filter>Src\PKEngine\Private\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PKEngine\Private\Systems\PKTime.cpp">
+      <Filter>Src\PKEngine\Private\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PongSample\Private\MovementBehaviour.cpp">
+      <Filter>Src\PongSample\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PKEngine\Private\Systems\PKRendering.cpp">
+      <Filter>Src\PKEngine\Private\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PKEngine\Private\Systems\PKPhysics.cpp">
+      <Filter>Src\PKEngine\Private\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PKEngine\Private\Game\PKBehaviour.cpp">
+      <Filter>Src\PKEngine\Private\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PongSample\Private\PongGame.cpp">
+      <Filter>Src\PongSample\Private</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Src\External\Public\glad\glad.h">
+      <Filter>Src\External\Public\glad</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\External\Public\GLFW\glfw3.h">
+      <Filter>Src\External\Public\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\External\Public\GLFW\glfw3native.h">
+      <Filter>Src\External\Public\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\External\Public\KHR\khrplatform.h">
+      <Filter>Src\External\Public\KHR</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PKEngine\Public\Core\PKEngine.h">
+      <Filter>Src\PKEngine\Public\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PKEngine\Public\Core\PKCommon.h">
+      <Filter>Src\PKEngine\Public\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PKEngine\Public\Core\PKMath.h">
+      <Filter>Src\PKEngine\Public\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PKEngine\Public\EngineComponents\PKMeshComponent.h">
+      <Filter>Src\PKEngine\Public\EngineComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PKEngine\Public\Core\PKTypes.h">
+      <Filter>Src\PKEngine\Public\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PKEngine\Public\Game\PKBehaviour.h">
+      <Filter>Src\PKEngine\Public\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PKEngine\Public\Game\PKGame.h">
+      <Filter>Src\PKEngine\Public\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PKEngine\Public\Game\PKGameObject.h">
+      <Filter>Src\PKEngine\Public\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PKEngine\Public\Systems\PKInput.h">
+      <Filter>Src\PKEngine\Public\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PKEngine\Public\Systems\PKTime.h">
+      <Filter>Src\PKEngine\Public\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PongSample\Public\MovementBehaviour.h">
+      <Filter>Src\PongSample\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PKEngine\Public\Systems\PKPhysics.h">
+      <Filter>Src\PKEngine\Public\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PKEngine\Public\Systems\PKRendering.h">
+      <Filter>Src\PKEngine\Public\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PKEngine\Public\Core\PKBase.h">
+      <Filter>Src\PKEngine\Public\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PongSample\Public\PongGame.h">
+      <Filter>Src\PongSample\Public</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Src\PKEngine\Public\Shaders\simple_vertex.glsl">
+      <Filter>Src\PKEngine\Public\Shaders</Filter>
+    </None>
+    <None Include="Src\PKEngine\Public\Shaders\simple_fragment.glsl">
+      <Filter>Src\PKEngine\Public\Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
