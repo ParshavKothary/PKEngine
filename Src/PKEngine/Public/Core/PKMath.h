@@ -181,7 +181,15 @@ namespace pkengine
 		glm::quat glmRotation;
 		bool bTransformDirty;
 
-		void RecalculateTransform()
+		void CheckedRecalculate()
+		{
+			if (bTransformDirty)
+			{
+				Recalculate();
+			}
+		}
+
+		void Recalculate()
 		{
 			glmMatrix = glm::translate(glm::mat4(1.0f), glmPosition);
 			glmMatrix *= glm::mat4(glmRotation);
@@ -212,11 +220,18 @@ namespace pkengine
 		
 		FTransform() : FTransform(glm::mat4(1.0f)) {}
 
-		FTransform(const FTransform& Other) : FTransform(Other.glmMatrix) {}
-
 		FTransform& operator=(const FTransform& Other)
 		{
-			return operator=(Other.glmMatrix);
+			glmPosition = Other.glmPosition;
+			glmRotation = Other.glmRotation;
+			glmScale = Other.glmScale;
+			Recalculate();
+			return *this;
+		}
+
+		FTransform(const FTransform& Other)
+		{
+			operator=(Other);
 		}
 
 		inline void SetPosition(FVector3 InPosition)
@@ -249,10 +264,7 @@ namespace pkengine
 
 		inline FVector3 operator*(const FVector3& Vector)
 		{
-			if (bTransformDirty)
-			{
-				RecalculateTransform();
-			}
+			CheckedRecalculate();
 
 			return FVector3(glmMatrix * glm::vec4(Vector.glmVector, 1.0f));
 		}
