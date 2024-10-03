@@ -44,7 +44,7 @@ namespace pkengine
 		char Name[32];
 		CMeshComponent* MeshComponent;
 
-		std::list<CPKBehaviour*> Behaviours;
+		containers::list<CPKBehaviour*> Behaviours;
 	};
 
 	template<typename T>

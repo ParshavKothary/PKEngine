@@ -11,8 +11,9 @@ namespace pkengine
 	{
 		assert(GameContext != nullptr);
 		Game = GameContext;
-		Behaviours = std::list<CPKBehaviour*>();
+		Behaviours = containers::list<CPKBehaviour*>();
 		Transform = new FTransform();
+		MeshComponent = nullptr;
 	}
 
 	CGameObject::~CGameObject()

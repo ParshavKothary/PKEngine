@@ -5,9 +5,9 @@
 
 namespace pkengine
 {
-	std::set<EKeyCode> CInput::DownKeys = std::set<EKeyCode>();
-	std::set<EKeyCode> CInput::HeldKeys = std::set<EKeyCode>();
-	std::set<EKeyCode> CInput::UpKeys = std::set<EKeyCode>();
+	containers::uset<EKeyCode> CInput::DownKeys = containers::uset<EKeyCode>();
+	containers::uset<EKeyCode> CInput::HeldKeys = containers::uset<EKeyCode>();
+	containers::uset<EKeyCode> CInput::UpKeys = containers::uset<EKeyCode>();
 
 	bool CInput::Init(GLFWwindow* Window)
 	{
@@ -27,7 +27,7 @@ namespace pkengine
 		UpKeys.clear();
 
 		// Verify/Remove held keys
-		std::set<EKeyCode>::iterator it = HeldKeys.begin();
+		containers::uset<EKeyCode>::iterator it = HeldKeys.begin();
 		while (it != HeldKeys.end())
 		{
 			if (glfwGetKey(Window, int(*it)) == GLFW_RELEASE)

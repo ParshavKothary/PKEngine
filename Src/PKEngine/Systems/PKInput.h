@@ -20,9 +20,9 @@ namespace pkengine
 		static void FlushInput(GLFWwindow* Window);
 		static void GLKeyCallback(GLFWwindow* Window, int GLFWKey, int ScanCode, int GLFWAction, int Mods);
 
-		static std::set<EKeyCode> DownKeys;
-		static std::set<EKeyCode> HeldKeys;
-		static std::set<EKeyCode> UpKeys;
+		static containers::uset<EKeyCode> DownKeys;
+		static containers::uset<EKeyCode> HeldKeys;
+		static containers::uset<EKeyCode> UpKeys;
 	};
 }
 

@@ -26,7 +26,7 @@ namespace pkengine
 
 		CPKEngine* Engine;
 		char Name[32];
-		std::list<CGameObject*> GameObjects;
+		containers::list<CGameObject*> GameObjects;
 
 	private:
 
