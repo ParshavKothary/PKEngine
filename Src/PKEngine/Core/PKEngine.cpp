@@ -70,10 +70,7 @@ namespace pkengine
 
             for (CGameObject*& GameObject : Game->GameObjects)
             {
-                for (CPKBehaviour*& Behaviour : GameObject->Behaviours)
-                {
-                    Behaviour->Update();
-                }
+                GameObject->Update();
             }
 
             // Draw

@@ -11,17 +11,17 @@ namespace pkengine
 	{
 		assert(GameContext != nullptr);
 		Game = GameContext;
-		Behaviours = containers::list<CPKBehaviour*>();
+		Behaviours = containers::umap<size_t, CPKBehaviour*>();
 		Transform = new FTransform();
 		MeshComponent = nullptr;
 	}
 
 	CGameObject::~CGameObject()
 	{
-		while (Behaviours.empty() == false)
+		for (BehavioursIterator it = Behaviours.begin(); it != Behaviours.end();)
 		{
-			delete Behaviours.front();
-			Behaviours.pop_front();
+			delete it->second;
+			it = Behaviours.erase(it);
 		}
 
 		if (MeshComponent != nullptr)
@@ -49,8 +49,12 @@ namespace pkengine
 		return MeshComponent;
 	}
 
-	void CGameObject::RegisterBehaviour(CPKBehaviour* Behaviour)
+	void CGameObject::Update()
 	{
-		Behaviours.push_back(Behaviour);
+		for (BehavioursIterator it = Behaviours.begin(); it != Behaviours.end(); ++it)
+		{
+			CPKBehaviour* pBehaviour = it->second;
+			pBehaviour->Update();
+		}
 	}
 }

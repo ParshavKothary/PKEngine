@@ -15,11 +15,11 @@ namespace pkengine
 		virtual ~CPKBehaviour() {}
 
 		inline CGameObject* GetOwner() const { return Owner; }
+		virtual void Update() {}
 
 	protected:
 
 		virtual void Init() {}
-		virtual void Update() {}
 
 		CGameObject* Owner;
 	};

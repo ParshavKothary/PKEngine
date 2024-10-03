@@ -30,6 +30,8 @@ namespace pkengine
 		template<typename T>
 		T* AddBehaviour();
 
+		virtual void Update();
+
 	protected:
 
 		virtual void Setup() {}
@@ -38,13 +40,12 @@ namespace pkengine
 
 	private:
 
-		void RegisterBehaviour(CPKBehaviour* Behaviour);
-
 		CPKGame* Game;
 		char Name[32];
 		CMeshComponent* MeshComponent;
 
-		containers::list<CPKBehaviour*> Behaviours;
+		containers::umap<size_t, CPKBehaviour*> Behaviours;
+		typedef containers::umap<size_t, CPKBehaviour*>::iterator BehavioursIterator;
 	};
 
 	template<typename T>
@@ -52,8 +53,15 @@ namespace pkengine
 	{
 		static_assert(std::is_base_of<CPKBehaviour, T>()); // T needs to derive from CPKBehaviour!
 
+		size_t typehash = typeid(T).hash_code();
+		if (Behaviours.find(typehash) != Behaviours.end())
+		{
+			std::cout << "Error: Trying to multiple of same behaviour type to GameObject" << std::endl;
+			return nullptr;
+		}
+
 		T* NewBehaviour = new T(this);
-		RegisterBehaviour(NewBehaviour);
+		Behaviours.insert({ typehash, static_cast<CPKBehaviour*>(NewBehaviour) });
 		return NewBehaviour;
 	}
 }
