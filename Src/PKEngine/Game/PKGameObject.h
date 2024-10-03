@@ -30,6 +30,9 @@ namespace pkengine
 		template<typename T>
 		T* AddBehaviour();
 
+		template<typename T>
+		T* GetBehaviour();
+
 		virtual void Update();
 
 	protected:
@@ -63,6 +66,21 @@ namespace pkengine
 		T* NewBehaviour = new T(this);
 		Behaviours.insert({ typehash, static_cast<CPKBehaviour*>(NewBehaviour) });
 		return NewBehaviour;
+	}
+
+	template<typename T>
+	inline T* CGameObject::GetBehaviour()
+	{
+		static_assert(std::is_base_of<CPKBehaviour, T>()); // T needs to derive from CPKBehaviour!
+
+		size_t typehash = typeid(T).hash_code();
+		BehavioursIterator it = Behaviours.find(typehash);
+		if (it != Behaviours.end())
+		{
+			return dynamic_cast<T*>(it->second);
+		}
+
+		return nullptr;
 	}
 }
 

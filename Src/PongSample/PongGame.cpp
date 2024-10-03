@@ -18,6 +18,6 @@ namespace pkengine
         NewGameObj = Engine->CreateGameObject<CGameObject>("TestTriangle2");
         NewGameObj->GetTransform()->SetScale(FVector3(0.2f, 0.2f, 1.0f));
         NewGameObj->GetTransform()->SetPosition(FVector3(0.2f, 0.5f, 0.0f));
-        NewGameObj->AddMesh(EMeshType::Quad, FVector3(0.1, 0.1, 0.7f));
+        NewGameObj->AddMesh(EMeshType::Quad, FVector3(0.1f, 0.1f, 0.7f));
 	}
 }
