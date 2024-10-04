@@ -18,6 +18,8 @@ namespace pkengine
 		EKeyCode RotateCWKey;
 		EKeyCode RotateCCWKey;
 
+		void AddMoveSpeed(int dir);
+
 	protected:
 
 		virtual void Update() override;

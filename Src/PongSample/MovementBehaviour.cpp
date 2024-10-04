@@ -16,6 +16,12 @@ namespace pkengine
 		MoveSpeed = 0.5f;
 	}
 
+	void CMovementBehaviour::AddMoveSpeed(int dir)
+	{
+		MoveSpeed += (float)dir * 0.25f;
+		MoveSpeed = std::clamp(MoveSpeed, 0.25f, 1.0f);
+	}
+
 	void CMovementBehaviour::Update()
 	{
 		HandleMove();

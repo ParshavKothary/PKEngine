@@ -33,6 +33,7 @@
     <ClCompile Include="Src\PKEngine\Systems\PKTime.cpp" />
     <ClCompile Include="Src\PongSample\MovementBehaviour.cpp" />
     <ClCompile Include="Src\PongSample\PongGame.cpp" />
+    <ClCompile Include="Src\PongSample\TestBehaviour.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\External\glad\glad.h" />
@@ -336,6 +337,7 @@
     <ClInclude Include="Src\PKEngine\Systems\PKTime.h" />
     <ClInclude Include="Src\PongSample\MovementBehaviour.h" />
     <ClInclude Include="Src\PongSample\PongGame.h" />
+    <ClInclude Include="Src\PongSample\TestBehaviour.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\External\glm\detail\func_common.inl" />
