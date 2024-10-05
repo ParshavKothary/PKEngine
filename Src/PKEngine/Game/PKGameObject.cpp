@@ -40,7 +40,7 @@ namespace pkengine
 			return nullptr;
 		}
 
-		MeshComponent = CRenderer::RegisterMesh(this);
+		MeshComponent = AddBehaviour_Internal<CMeshComponent>();
 		if (MeshComponent != nullptr)
 		{
 			MeshComponent->SetColor(Color);

@@ -1,6 +1,5 @@
 #include <EngineComponents/PKMeshComponent.h>
-#include <Game/PKGameObject.h>
-#include <glad/glad.h>
+#include <Systems/PKRendering.h>
 
 namespace pkengine
 {
@@ -13,4 +12,9 @@ namespace pkengine
         FVector3(0.5f, 0.5f, 0.0f),
         FVector3(0.5f, -0.5f, 0.0f)
     }};
+
+    bool CMeshComponent::CheckConstruct()
+    {
+        return CRenderer::RegisterMesh(this);
+    }
 }

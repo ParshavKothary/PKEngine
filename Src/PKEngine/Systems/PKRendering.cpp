@@ -64,20 +64,18 @@ namespace pkengine
         }
     }
 
-    CMeshComponent* CRenderer::RegisterMesh(CGameObject* ContextObj)
+    bool CRenderer::RegisterMesh(CMeshComponent* MeshComponent)
     {
         assert(bInit());
-        assert(ContextObj != nullptr);
+        assert(MeshComponent != nullptr);
 
-        CMeshComponent* MeshComponent = new CMeshComponent(ContextObj);
         if (Instance->AddMeshToBuffer(MeshComponent) == false)
         {
             std::cout << "Error registering mesh into Renderer. Buffer might be full." << std::endl;
-            delete MeshComponent;
-            return nullptr;
+            return false;
         }
 
-        return MeshComponent;
+        return true;
     }
 
     void CRenderer::UnregisterMesh(CMeshComponent* MeshComponent)

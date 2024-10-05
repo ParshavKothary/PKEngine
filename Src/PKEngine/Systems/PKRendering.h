@@ -29,7 +29,7 @@ namespace pkengine
 		static bool Init(const int WindowWidth, const int WindowHeight, const char* WindowTitle);
 		static void Exit();
 
-		static CMeshComponent* RegisterMesh(CGameObject* ContextObj);
+		static bool RegisterMesh(CMeshComponent* MeshComponent);
 		static void UnregisterMesh(CMeshComponent* MeshComponent);
 
 		static void Draw();

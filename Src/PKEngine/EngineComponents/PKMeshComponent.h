@@ -8,18 +8,20 @@ namespace pkengine
 {
 	class CRenderer;
 
-	class CMeshComponent : public CPKBehaviour
+	class CMeshComponent : public CPKBehaviour_Internal
 	{
 		friend CRenderer;
 
 	public:
-		CMeshComponent(CGameObject* InOwner) : CPKBehaviour(InOwner)
+		CMeshComponent(CGameObject* InOwner) : CPKBehaviour_Internal(InOwner)
 		{
 			RendererIndex = -1;
 		}
 
 		inline void SetColor(const FVector3& InColor) { Color = InColor; }
 		inline FVector3 GetColor() const { return Color; }
+
+		virtual bool CheckConstruct() override;
 
 	private:
 

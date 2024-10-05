@@ -6,6 +6,7 @@
 namespace pkengine
 {
 	class CMeshComponent;
+	class CPKBehaviour_Internal;
 	class CPKBehaviour;
 	class CPKEngine;
 	class CPKGame;
@@ -46,6 +47,9 @@ namespace pkengine
 
 	private:
 
+		template<typename T>
+		T* AddBehaviour_Internal();
+
 		CPKGame* Game;
 		char Name[32];
 		CMeshComponent* MeshComponent;
@@ -55,26 +59,46 @@ namespace pkengine
 	};
 
 	template<typename T>
+	T* CGameObject::AddBehaviour_Internal()
+	{
+		static_assert(std::is_base_of<CPKBehaviour_Internal, T>());
+
+		T* NewBehaviour = new T(this);
+		CPKBehaviour_Internal* BehaviourBase = static_cast<CPKBehaviour_Internal*>(NewBehaviour);
+		if (BehaviourBase->CheckConstruct() == false)
+		{
+			delete NewBehaviour;
+			return nullptr;
+		}
+
+		return NewBehaviour;
+	}
+
+	template<typename T>
 	T* CGameObject::AddBehaviour()
 	{
-		static_assert(std::is_base_of<CPKBehaviour, T>()); // T needs to derive from CPKBehaviour!
+		static_assert(std::is_base_of<CPKBehaviour, T>());
 
 		size_t typehash = typeid(T).hash_code();
 		if (Behaviours.find(typehash) != Behaviours.end())
 		{
-			std::cout << "Error: Trying to multiple of same behaviour type to GameObject" << std::endl;
+			std::cout << "Error: Trying to multiple of " << typeid(T).name() << " type to GameObject " << Name << std::endl;
 			return nullptr;
 		}
 
-		T* NewBehaviour = new T(this);
-		Behaviours.insert({ typehash, static_cast<CPKBehaviour*>(NewBehaviour) });
+		T* NewBehaviour = AddBehaviour_Internal<T>();
+		if (NewBehaviour != nullptr)
+		{
+			Behaviours.insert({ typehash, static_cast<CPKBehaviour*>(NewBehaviour) });
+		}
+		
 		return NewBehaviour;
 	}
 
 	template<typename T>
 	T* CGameObject::GetBehaviour()
 	{
-		static_assert(std::is_base_of<CPKBehaviour, T>()); // T needs to derive from CPKBehaviour!
+		static_assert(std::is_base_of<CPKBehaviour, T>());
 
 		size_t typehash = typeid(T).hash_code();
 		BehavioursIterator it = Behaviours.find(typehash);
