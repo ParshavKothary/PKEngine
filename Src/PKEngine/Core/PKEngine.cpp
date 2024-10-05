@@ -1,9 +1,10 @@
 #include <Core/PKEngine.h>
-#include <Core/PKCommon.h>
 #include <Game/PKGame.h>
 #include <Game/PKGameObject.h>
 #include <Game/PKBehaviour.h>
+#include <Systems/PKInput.h>
 #include <Systems/PKRendering.h>
+#include <Systems/PKTime.h>
 
 namespace pkengine
 {

@@ -1,7 +1,6 @@
 #include <TestBehaviour.h>
 #include <MovementBehaviour.h>
 #include <Core/PKCommon.h>
-#include <Game/PKGameObject.h>
 
 namespace pkengine
 {

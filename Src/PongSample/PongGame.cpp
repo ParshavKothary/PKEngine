@@ -1,8 +1,8 @@
 #include <PongGame.h>
-#include <Game/PKGameObject.h>
 #include <MovementBehaviour.h>
 #include <TestBehaviour.h>
 #include <Core/PKEngine.h>
+#include <Core/PKCommon.h>
 
 namespace pkengine
 {

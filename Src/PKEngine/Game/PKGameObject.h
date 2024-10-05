@@ -28,6 +28,9 @@ namespace pkengine
 		CMeshComponent* AddMesh(EMeshType MeshType, const FVector3& Color);
 
 		template<typename T>
+		T* AddPhysics();
+
+		template<typename T>
 		T* AddBehaviour();
 
 		template<typename T>
@@ -52,7 +55,7 @@ namespace pkengine
 	};
 
 	template<typename T>
-	inline T* CGameObject::AddBehaviour()
+	T* CGameObject::AddBehaviour()
 	{
 		static_assert(std::is_base_of<CPKBehaviour, T>()); // T needs to derive from CPKBehaviour!
 
@@ -69,7 +72,7 @@ namespace pkengine
 	}
 
 	template<typename T>
-	inline T* CGameObject::GetBehaviour()
+	T* CGameObject::GetBehaviour()
 	{
 		static_assert(std::is_base_of<CPKBehaviour, T>()); // T needs to derive from CPKBehaviour!
 
@@ -80,6 +83,12 @@ namespace pkengine
 			return dynamic_cast<T*>(it->second);
 		}
 
+		return nullptr;
+	}
+
+	template<typename T>
+	T* CGameObject::AddPhysics()
+	{
 		return nullptr;
 	}
 }
