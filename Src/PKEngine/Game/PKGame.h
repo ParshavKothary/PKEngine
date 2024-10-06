@@ -10,8 +10,6 @@ namespace pkengine
 
 	class CGame
 	{
-		friend CPKEngine;
-
 	public:
 
 		CGame(CPKEngine* EngineContext);
@@ -22,11 +20,11 @@ namespace pkengine
 		template<typename T>
 		T* CreateGameObject(const char* InName);
 
-	protected:
-
 		virtual void Setup() { }
 		virtual void Start();
 		virtual void Update();
+
+	protected:
 
 		CPKEngine* Engine;
 		containers::list<CGameObject*> GameObjects;

@@ -15,8 +15,6 @@ namespace pkengine
 
 	class CGameObject : public PKNamedObject
 	{
-		friend CPKEngine;
-
 	public:
 
 		CGameObject(CGame* GameContext);
@@ -25,6 +23,10 @@ namespace pkengine
 		inline CGame* GetGame() const { return Game; }
 
 		inline FTransform* GetTransform() const { return Transform; }
+
+		inline CMeshComponent* GetMeshComponent() const { return MeshComponent; }
+
+		inline CCollider* GetCollider() const { return Collider; }
 
 		CMeshComponent* AddMeshComponent(EMeshType MeshType, const FVector3& Color);
 
@@ -48,14 +50,17 @@ namespace pkengine
 		CCollider* Collider;
 
 		containers::umap<size_t, CBehaviour*> Behaviours;
-		typedef containers::umap<size_t, CBehaviour*>::iterator BehavioursIterator;
+		typedef containers::umap<size_t, CBehaviour*>::iterator IBehavioursIterator;
+
+	private:
+
+		template<typename T>
+		T* AddBehaviourInternal();
 	};
 
 	template<typename T>
-	T* CGameObject::AddBehaviour()
+	T* CGameObject::AddBehaviourInternal()
 	{
-		static_assert(std::is_base_of<CBehaviour, T>());
-
 		size_t typehash = typeid(T).hash_code();
 		if (Behaviours.find(typehash) != Behaviours.end())
 		{
@@ -64,16 +69,25 @@ namespace pkengine
 		}
 
 		T* NewBehaviour = new T(this);
-		CBehaviour* BehaviourBase = static_cast<CBehaviour*>(NewBehaviour);
-		if (BehaviourBase->CheckConstruct() == false)
+		if (NewBehaviour->CheckConstruct() == false)
 		{
 			delete NewBehaviour;
 			return nullptr;
 		}
-		
-		Behaviours.insert({ typehash, static_cast<CBehaviour*>(NewBehaviour) });
-		
+
+		Behaviours.emplace(typehash, NewBehaviour);
+
 		return NewBehaviour;
+	}
+
+	template<typename T>
+	T* CGameObject::AddBehaviour()
+	{
+		static_assert(std::is_base_of<CBehaviour, T>());
+		static_assert(std::is_base_of<CCollider, T>() == false); // Should be added using AddCollider()
+		static_assert(std::is_base_of<CMeshComponent, T>() == false); // Should be added using AddMeshComponent()
+
+		return AddBehaviourInternal<T>();
 	}
 
 	template<typename T>
@@ -82,7 +96,7 @@ namespace pkengine
 		static_assert(std::is_base_of<CBehaviour, T>());
 
 		size_t typehash = typeid(T).hash_code();
-		BehavioursIterator it = Behaviours.find(typehash);
+		IBehavioursIterator it = Behaviours.find(typehash);
 		if (it != Behaviours.end())
 		{
 			return dynamic_cast<T*>(it->second);

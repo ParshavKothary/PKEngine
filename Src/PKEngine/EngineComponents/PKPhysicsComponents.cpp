@@ -1,5 +1,6 @@
 #include <EngineComponents/PKPhysicsComponents.h>
 #include <Game/PKGameObject.h>
+#include <Systems/PKPhysics.h>
 
 namespace pkengine
 {
@@ -19,7 +20,7 @@ namespace pkengine
 
 	bool CCollider::CheckConstruct()
 	{
-		return true;
+		return CPhysics::RegisterCollider(this);
 	}
 
 	void CCollider::AddHandler(CCollisionHandler* Handler)

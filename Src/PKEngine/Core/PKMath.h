@@ -280,6 +280,10 @@ namespace pkengine
 		class CCollider* collider;
 		FVector3 point;
 		FVector3 normal;
+
+		FCollision(class CCollider* col, const FVector3& p, const FVector3& n)
+			: collider(col), point(p), normal(n)
+		{}
 	};
 }
 

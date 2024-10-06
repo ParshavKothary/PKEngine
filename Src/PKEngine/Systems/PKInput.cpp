@@ -4,9 +4,9 @@
 
 namespace pkengine
 {
-	containers::uset<EKeyCode> CInput::DownKeys = containers::uset<EKeyCode>();
-	containers::uset<EKeyCode> CInput::HeldKeys = containers::uset<EKeyCode>();
-	containers::uset<EKeyCode> CInput::UpKeys = containers::uset<EKeyCode>();
+	CInput::IKeySet CInput::DownKeys = CInput::IKeySet();
+	CInput::IKeySet CInput::HeldKeys = CInput::IKeySet();
+	CInput::IKeySet CInput::UpKeys = CInput::IKeySet();
 
 	bool CInput::Init(GLFWwindow* Window)
 	{

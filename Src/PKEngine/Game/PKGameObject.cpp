@@ -5,6 +5,7 @@
 #include <EngineComponents/PKMeshComponent.h>
 #include <EngineComponents/PKPhysicsComponents.h>
 #include <Systems/PKRendering.h>
+#include <Systems/PKPhysics.h>
 
 namespace pkengine
 {
@@ -15,6 +16,7 @@ namespace pkengine
 		Behaviours = containers::umap<size_t, CBehaviour*>();
 		Transform = new FTransform();
 		MeshComponent = nullptr;
+		Collider = nullptr;
 	}
 
 	CGameObject::~CGameObject()
@@ -24,7 +26,12 @@ namespace pkengine
 			CRenderer::UnregisterMesh(MeshComponent);
 		}
 
-		for (BehavioursIterator it = Behaviours.begin(); it != Behaviours.end();)
+		if (Collider != nullptr)
+		{
+			CPhysics::UnregisterCollider(Collider);
+		}
+
+		for (IBehavioursIterator it = Behaviours.begin(); it != Behaviours.end();)
 		{
 			delete it->second;
 			it = Behaviours.erase(it);
@@ -41,7 +48,7 @@ namespace pkengine
 			return nullptr;
 		}
 
-		MeshComponent = AddBehaviour<CMeshComponent>();
+		MeshComponent = AddBehaviourInternal<CMeshComponent>();
 		if (MeshComponent != nullptr)
 		{
 			MeshComponent->SetColor(Color);
@@ -58,7 +65,7 @@ namespace pkengine
 			return nullptr;
 		}
 
-		Collider = AddBehaviour<CCollider>();
+		Collider = AddBehaviourInternal<CCollider>();
 		if (Collider != nullptr)
 		{
 			Collider->SetSizeAndOffset(size, offset);
@@ -69,7 +76,7 @@ namespace pkengine
 
 	void CGameObject::Start()
 	{
-		for (BehavioursIterator it = Behaviours.begin(); it != Behaviours.end(); ++it)
+		for (IBehavioursIterator it = Behaviours.begin(); it != Behaviours.end(); ++it)
 		{
 			CBehaviour* pBehaviour = it->second;
 			pBehaviour->Start();
@@ -78,7 +85,7 @@ namespace pkengine
 
 	void CGameObject::Update()
 	{
-		for (BehavioursIterator it = Behaviours.begin(); it != Behaviours.end(); ++it)
+		for (IBehavioursIterator it = Behaviours.begin(); it != Behaviours.end(); ++it)
 		{
 			CBehaviour* pBehaviour = it->second;
 			pBehaviour->Update();
