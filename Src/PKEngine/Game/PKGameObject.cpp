@@ -32,7 +32,7 @@ namespace pkengine
 		delete Transform;
 	}
 
-	CMeshComponent* CGameObject::AddMesh(EMeshType MeshType, const FVector3& Color)
+	CMeshComponent* CGameObject::AddMeshComponent(EMeshType MeshType, const FVector3& Color)
 	{
 		if (MeshComponent != nullptr)
 		{
@@ -47,6 +47,11 @@ namespace pkengine
 		}
 
 		return MeshComponent;
+	}
+
+	CCollider* CGameObject::AddCollider(const FVector3& size, const FVector3& offset)
+	{
+		return nullptr;
 	}
 
 	void CGameObject::Update()

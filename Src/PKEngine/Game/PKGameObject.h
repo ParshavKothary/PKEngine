@@ -5,9 +5,11 @@
 
 namespace pkengine
 {
-	class CMeshComponent;
 	class CBehaviour_Internal;
 	class CBehaviour;
+	class CCollider;
+	class CCollisionHandler;
+	class CMeshComponent;
 	class CPKEngine;
 	class CPKGame;
 
@@ -26,10 +28,9 @@ namespace pkengine
 
 		inline FTransform* GetTransform() const { return Transform; }
 
-		CMeshComponent* AddMesh(EMeshType MeshType, const FVector3& Color);
+		CMeshComponent* AddMeshComponent(EMeshType MeshType, const FVector3& Color);
 
-		template<typename T>
-		T* AddPhysics();
+		CCollider* AddCollider(const FVector3& size, const FVector3& offset);
 
 		template<typename T>
 		T* AddBehaviour();
@@ -53,6 +54,7 @@ namespace pkengine
 		CPKGame* Game;
 		char Name[32];
 		CMeshComponent* MeshComponent;
+		CCollider* Collider;
 
 		containers::umap<size_t, CBehaviour*> Behaviours;
 		typedef containers::umap<size_t, CBehaviour*>::iterator BehavioursIterator;
@@ -107,12 +109,6 @@ namespace pkengine
 			return dynamic_cast<T*>(it->second);
 		}
 
-		return nullptr;
-	}
-
-	template<typename T>
-	T* CGameObject::AddPhysics()
-	{
 		return nullptr;
 	}
 }
