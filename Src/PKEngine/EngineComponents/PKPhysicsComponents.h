@@ -6,10 +6,10 @@
 
 namespace pkengine
 {
-	class CCollider : public CBehaviour_Internal
+	class CCollider : public CBehaviour
 	{
 	public:
-		CCollider(CGameObject* InOwner) : CBehaviour_Internal(InOwner) {}
+		CCollider(CGameObject* InOwner) : CBehaviour(InOwner) {}
 
 		virtual void SetSizeAndOffset(const FVector3& size, const FVector3& offset);
 		virtual bool CheckConstruct() override;
@@ -24,7 +24,7 @@ namespace pkengine
 	public:
 		CCollisionHandler(CGameObject* InOwner) : CBehaviour(InOwner) {}
 
-		virtual void OnCollision();
+		virtual void OnCollision() {}
 
 	protected:
 		FVector3 max;

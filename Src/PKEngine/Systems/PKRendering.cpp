@@ -84,8 +84,6 @@ namespace pkengine
         assert(MeshComponent != nullptr);
 
         Instance->RemoveMeshFromBuffer(MeshComponent);
-
-        delete MeshComponent;
     }
 
     void CRenderer::Draw()

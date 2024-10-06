@@ -12,9 +12,4 @@ namespace pkengine
 	{
 		return true;
 	}
-
-	void CCollisionHandler::OnCollision()
-	{
-
-	}
 }

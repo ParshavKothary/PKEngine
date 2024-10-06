@@ -3,7 +3,7 @@
 
 namespace pkengine
 {
-	CBehaviour_Internal::CBehaviour_Internal(CGameObject* InOwner)
+	CBehaviour::CBehaviour(CGameObject* InOwner)
 	{
 		assert(InOwner != nullptr);
 		Owner = InOwner;

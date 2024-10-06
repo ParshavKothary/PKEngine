@@ -5,7 +5,7 @@
 
 namespace pkengine
 {
-	class CBehaviour_Internal;
+	class CBehaviour;
 	class CBehaviour;
 	class CCollider;
 	class CCollisionHandler;
@@ -48,9 +48,6 @@ namespace pkengine
 
 	private:
 
-		template<typename T>
-		T* AddBehaviour_Internal();
-
 		CPKGame* Game;
 		char Name[32];
 		CMeshComponent* MeshComponent;
@@ -59,22 +56,6 @@ namespace pkengine
 		containers::umap<size_t, CBehaviour*> Behaviours;
 		typedef containers::umap<size_t, CBehaviour*>::iterator BehavioursIterator;
 	};
-
-	template<typename T>
-	T* CGameObject::AddBehaviour_Internal()
-	{
-		static_assert(std::is_base_of<CBehaviour_Internal, T>());
-
-		T* NewBehaviour = new T(this);
-		CBehaviour_Internal* BehaviourBase = static_cast<CBehaviour_Internal*>(NewBehaviour);
-		if (BehaviourBase->CheckConstruct() == false)
-		{
-			delete NewBehaviour;
-			return nullptr;
-		}
-
-		return NewBehaviour;
-	}
 
 	template<typename T>
 	T* CGameObject::AddBehaviour()
@@ -88,11 +69,15 @@ namespace pkengine
 			return nullptr;
 		}
 
-		T* NewBehaviour = AddBehaviour_Internal<T>();
-		if (NewBehaviour != nullptr)
+		T* NewBehaviour = new T(this);
+		CBehaviour* BehaviourBase = static_cast<CBehaviour*>(NewBehaviour);
+		if (BehaviourBase->CheckConstruct() == false)
 		{
-			Behaviours.insert({ typehash, static_cast<CBehaviour*>(NewBehaviour) });
+			delete NewBehaviour;
+			return nullptr;
 		}
+		
+		Behaviours.insert({ typehash, static_cast<CBehaviour*>(NewBehaviour) });
 		
 		return NewBehaviour;
 	}

@@ -3,6 +3,7 @@
 #include <Game/PKBehaviour.h>
 #include <Game/PKGame.h>
 #include <EngineComponents/PKMeshComponent.h>
+#include <EngineComponents/PKPhysicsComponents.h>
 #include <Systems/PKRendering.h>
 
 namespace pkengine
@@ -18,15 +19,15 @@ namespace pkengine
 
 	CGameObject::~CGameObject()
 	{
+		if (MeshComponent != nullptr)
+		{
+			CRenderer::UnregisterMesh(MeshComponent);
+		}
+
 		for (BehavioursIterator it = Behaviours.begin(); it != Behaviours.end();)
 		{
 			delete it->second;
 			it = Behaviours.erase(it);
-		}
-
-		if (MeshComponent != nullptr)
-		{
-			CRenderer::UnregisterMesh(MeshComponent);
 		}
 
 		delete Transform;
@@ -40,7 +41,7 @@ namespace pkengine
 			return nullptr;
 		}
 
-		MeshComponent = AddBehaviour_Internal<CMeshComponent>();
+		MeshComponent = AddBehaviour<CMeshComponent>();
 		if (MeshComponent != nullptr)
 		{
 			MeshComponent->SetColor(Color);
@@ -51,7 +52,19 @@ namespace pkengine
 
 	CCollider* CGameObject::AddCollider(const FVector3& size, const FVector3& offset)
 	{
-		return nullptr;
+		if (Collider != nullptr)
+		{
+			std::cout << "Error: Trying to add multiple colliders to same GameObject" << std::endl;
+			return nullptr;
+		}
+
+		Collider = AddBehaviour<CCollider>();
+		if (Collider != nullptr)
+		{
+			Collider->SetSizeAndOffset(size, offset);
+		}
+
+		return Collider;
 	}
 
 	void CGameObject::Update()

@@ -8,12 +8,12 @@ namespace pkengine
 {
 	class CRenderer;
 
-	class CMeshComponent : public CBehaviour_Internal
+	class CMeshComponent : public CBehaviour
 	{
 		friend CRenderer;
 
 	public:
-		CMeshComponent(CGameObject* InOwner) : CBehaviour_Internal(InOwner)
+		CMeshComponent(CGameObject* InOwner) : CBehaviour(InOwner)
 		{
 			RendererIndex = -1;
 		}
