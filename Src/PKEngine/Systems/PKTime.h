@@ -15,8 +15,8 @@ namespace pkengine
 		inline static float GetCurrentTime() { return CurrentGameTime; }
 
 	private:
-		static void GameStarted();
-		static void Tick();
+		static void Start();
+		static void Update();
 
 		static float DeltaTime;
 		static float CurrentGameTime;

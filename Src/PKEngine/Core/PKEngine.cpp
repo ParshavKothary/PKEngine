@@ -3,6 +3,7 @@
 #include <Game/PKGameObject.h>
 #include <Game/PKBehaviour.h>
 #include <Systems/PKInput.h>
+#include <Systems/PKPhysics.h>
 #include <Systems/PKRendering.h>
 #include <Systems/PKTime.h>
 
@@ -25,12 +26,9 @@ namespace pkengine
         return true;
 	}
 
-    void CPKEngine::RegisterGame(CPKGame* InGame, const char* GameName)
+    void CPKEngine::OnGameCreated()
     {
-        Game = InGame;
-        strcpy_s(Game->Name, GameName);
-
-        InGame->Setup();
+        Game->Setup();
     }
 
     CPKEngine::CPKEngine()
@@ -59,36 +57,31 @@ namespace pkengine
             return;
         }
 
+        if (Game == nullptr)
+        {
+            std::cout << "Trying to RunGame but Game is null!" << std::endl;
+            return;
+        }
+
         bRunning = true;
-        CTime::GameStarted();
+        CTime::Start();
+        Game->Start();
 
         while (bShouldExit == false)
         {
-            // Input update
-            glfwPollEvents();
+            CInput::Update();
 
-            // Physics update
+            CPhysics::Update();
 
-            for (CGameObject*& GameObject : Game->GameObjects)
-            {
-                GameObject->Update();
-            }
+            Game->Update();
 
-            // Draw
             CRenderer::Draw();
 
             bShouldExit = glfwWindowShouldClose(CRenderer::GetWindow()) ||
                 CInput::GetKeyUp(EKeyCode::KeyCode_ESCAPE);
 
             CInput::FlushInput(CRenderer::GetWindow());
-            CTime::Tick();
+            CTime::Update();
         }
 	}
-
-    void CPKEngine::RegisterGameObject(CGameObject* GameObject, const char* InName)
-    {
-        strcpy_s(GameObject->Name, Game->GetAvailableGameObjectName(InName));
-        Game->GameObjects.push_back(GameObject);
-        GameObject->Setup();
-    }
 }

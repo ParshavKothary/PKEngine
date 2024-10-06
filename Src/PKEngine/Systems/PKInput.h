@@ -2,7 +2,6 @@
 #define PKENGINE_PKINPUT_H
 
 #include <Core/PKBase.h>
-#include <GLFW/glfw3.h>
 
 namespace pkengine
 {
@@ -17,6 +16,7 @@ namespace pkengine
 
 	private:
 		static bool Init(GLFWwindow* Window);
+		static void Update();
 		static void FlushInput(GLFWwindow* Window);
 		static void GLKeyCallback(GLFWwindow* Window, int GLFWKey, int ScanCode, int GLFWAction, int Mods);
 

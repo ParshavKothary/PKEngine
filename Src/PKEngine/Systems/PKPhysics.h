@@ -1,13 +1,15 @@
 #ifndef PKENGINE_PKPHYSICS_H
 #define PKENGINE_PKPHYSICS_H
 
+#include <Core/PKBase.h>
+
 namespace pkengine
 {
 	class CPhysics
 	{
-		friend class CPKEngine;
-
 	public:
+
+		static void Update();
 
 	private:
 	};

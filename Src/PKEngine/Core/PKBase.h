@@ -18,6 +18,19 @@
 
 namespace pkengine
 {
+	class PKNamedObject
+	{
+	private:
+		static const unsigned int s_len = 32;
+
+	public:
+		void SetName(const std::string& name) { strncpy_s(Name, name.c_str(), s_len); }
+		const char* GetName() const { return Name; }
+
+	protected:
+		char Name[32];
+	};
+
 	namespace containers
 	{
 		template<typename K, typename V>

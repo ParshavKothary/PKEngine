@@ -11,7 +11,7 @@ namespace pkengine
 	CTime::CPKTimePoint CTime::GameStartTimePoint;
 	CTime::CPKTimePoint CTime::CachedTimePoint;
 
-	void CTime::GameStarted()
+	void CTime::Start()
 	{
 		CPKTimePoint Now = std::chrono::high_resolution_clock::now();
 		CachedTimePoint = Now;
@@ -21,7 +21,7 @@ namespace pkengine
 		CurrentGameTime = 0.0f;
 	}
 
-	void CTime::Tick()
+	void CTime::Update()
 	{
 		CPKTimePoint Now = std::chrono::high_resolution_clock::now();
 		DeltaTime = DurationDoubleMicro(Now - CachedTimePoint) * MicroToSeconds;

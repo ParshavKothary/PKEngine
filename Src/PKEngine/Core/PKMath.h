@@ -274,6 +274,13 @@ namespace pkengine
 			return FVector3(glm::mat4(glmRotation) * glm::vec4(0.0f, 1.0f, 0.0f, 0.0f));
 		}
 	};
+
+	struct FCollision
+	{
+		class CCollider* collider;
+		FVector3 point;
+		FVector3 normal;
+	};
 }
 
 #endif // !PKENGINE_PKMATH_H

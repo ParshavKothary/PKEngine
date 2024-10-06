@@ -7,11 +7,11 @@ namespace pkengine
 {
 	class CPKEngine;
 
-	class CPongGame : public CPKGame
+	class CPongGame : public CGame
 	{
 	public:
 
-		CPongGame(CPKEngine* EngineContext) : CPKGame(EngineContext) { }
+		CPongGame(CPKEngine* EngineContext) : CGame(EngineContext) { }
 
 	protected:
 

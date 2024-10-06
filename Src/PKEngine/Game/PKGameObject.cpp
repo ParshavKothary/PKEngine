@@ -8,7 +8,7 @@
 
 namespace pkengine
 {
-	CGameObject::CGameObject(CPKGame* GameContext)
+	CGameObject::CGameObject(CGame* GameContext)
 	{
 		assert(GameContext != nullptr);
 		Game = GameContext;
@@ -65,6 +65,15 @@ namespace pkengine
 		}
 
 		return Collider;
+	}
+
+	void CGameObject::Start()
+	{
+		for (BehavioursIterator it = Behaviours.begin(); it != Behaviours.end(); ++it)
+		{
+			CBehaviour* pBehaviour = it->second;
+			pBehaviour->Start();
+		}
 	}
 
 	void CGameObject::Update()

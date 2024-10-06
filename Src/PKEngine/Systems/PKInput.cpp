@@ -20,6 +20,11 @@ namespace pkengine
 		return true;
 	}
 
+	void CInput::Update()
+	{
+		glfwPollEvents();
+	}
+
 	void CInput::FlushInput(GLFWwindow* Window)
 	{
 		DownKeys.clear();

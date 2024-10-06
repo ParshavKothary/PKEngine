@@ -17,6 +17,8 @@ namespace pkengine
 
 		inline CGameObject* GetOwner() const { return Owner; }
 
+		virtual void Start() {}
+
 		virtual void Update() {}
 
 	protected:

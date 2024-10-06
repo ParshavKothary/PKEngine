@@ -1,0 +1,10 @@
+pointer name refactor
+garbage collection check
+friend check
+const correctness refactor
+remove shape type. squares only!!
+
+
+
+instanced rendering
+levels

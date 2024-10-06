@@ -11,20 +11,18 @@ namespace pkengine
 	class CCollisionHandler;
 	class CMeshComponent;
 	class CPKEngine;
-	class CPKGame;
+	class CGame;
 
-	class CGameObject
+	class CGameObject : public PKNamedObject
 	{
 		friend CPKEngine;
 
 	public:
 
-		CGameObject(CPKGame* GameContext);
+		CGameObject(CGame* GameContext);
 		virtual ~CGameObject();
 		
-		inline CPKGame* GetGame() const { return Game; }
-
-		inline const char* GetName() const { return Name; }
+		inline CGame* GetGame() const { return Game; }
 
 		inline FTransform* GetTransform() const { return Transform; }
 
@@ -38,18 +36,14 @@ namespace pkengine
 		template<typename T>
 		T* GetBehaviour();
 
+		virtual void Setup() {}
+		virtual void Start();
 		virtual void Update();
 
 	protected:
 
-		virtual void Setup() {}
-
+		CGame* Game;
 		FTransform* Transform;
-
-	private:
-
-		CPKGame* Game;
-		char Name[32];
 		CMeshComponent* MeshComponent;
 		CCollider* Collider;
 
