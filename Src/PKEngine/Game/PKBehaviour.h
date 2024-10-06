@@ -6,12 +6,12 @@ namespace pkengine
 	class CGameObject;
 	class CPKEngine;
 
-	class CPKBehaviour_Internal
+	class CBehaviour_Internal
 	{
 	public:
-		CPKBehaviour_Internal(CGameObject* InOwner);
+		CBehaviour_Internal(CGameObject* InOwner);
 
-		virtual ~CPKBehaviour_Internal() {}
+		virtual ~CBehaviour_Internal() {}
 
 		virtual bool CheckConstruct() { return true; }
 
@@ -21,11 +21,11 @@ namespace pkengine
 		CGameObject* Owner;
 	};
 
-	class CPKBehaviour : public CPKBehaviour_Internal
+	class CBehaviour : public CBehaviour_Internal
 	{
 	public:
-		CPKBehaviour(CGameObject* InOwner) : CPKBehaviour_Internal(InOwner) {}
-		virtual ~CPKBehaviour() {}
+		CBehaviour(CGameObject* InOwner) : CBehaviour_Internal(InOwner) {}
+		virtual ~CBehaviour() {}
 
 		virtual void Update() {}
 	};

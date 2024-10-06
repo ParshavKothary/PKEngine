@@ -24,6 +24,7 @@
     <ClCompile Include="Src\Main.cpp" />
     <ClCompile Include="Src\PKEngine\Core\PKEngine.cpp" />
     <ClCompile Include="Src\PKEngine\EngineComponents\PKMeshComponent.cpp" />
+    <ClCompile Include="Src\PKEngine\EngineComponents\PKPhysicsComponent.cpp" />
     <ClCompile Include="Src\PKEngine\Game\PKBehaviour.cpp" />
     <ClCompile Include="Src\PKEngine\Game\PKGame.cpp" />
     <ClCompile Include="Src\PKEngine\Game\PKGameObject.cpp" />
@@ -328,6 +329,7 @@
     <ClInclude Include="Src\PKEngine\Core\PKMath.h" />
     <ClInclude Include="Src\PKEngine\Core\PKTypes.h" />
     <ClInclude Include="Src\PKEngine\EngineComponents\PKMeshComponent.h" />
+    <ClInclude Include="Src\PKEngine\EngineComponents\PKPhysicsComponent.h" />
     <ClInclude Include="Src\PKEngine\Game\PKBehaviour.h" />
     <ClInclude Include="Src\PKEngine\Game\PKGame.h" />
     <ClInclude Include="Src\PKEngine\Game\PKGameObject.h" />

@@ -11,7 +11,7 @@ namespace pkengine
 	{
 		assert(GameContext != nullptr);
 		Game = GameContext;
-		Behaviours = containers::umap<size_t, CPKBehaviour*>();
+		Behaviours = containers::umap<size_t, CBehaviour*>();
 		Transform = new FTransform();
 		MeshComponent = nullptr;
 	}
@@ -53,7 +53,7 @@ namespace pkengine
 	{
 		for (BehavioursIterator it = Behaviours.begin(); it != Behaviours.end(); ++it)
 		{
-			CPKBehaviour* pBehaviour = it->second;
+			CBehaviour* pBehaviour = it->second;
 			pBehaviour->Update();
 		}
 	}

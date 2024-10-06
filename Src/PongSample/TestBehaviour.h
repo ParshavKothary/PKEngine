@@ -6,10 +6,10 @@
 
 namespace pkengine
 {
-	class CTestBehaviour : public CPKBehaviour
+	class CTestBehaviour : public CBehaviour
 	{
 	public:
-		CTestBehaviour(CGameObject* InOwner) : CPKBehaviour(InOwner) {};
+		CTestBehaviour(CGameObject* InOwner) : CBehaviour(InOwner) {};
 
 	protected:
 

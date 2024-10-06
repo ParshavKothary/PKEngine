@@ -1,5 +1,5 @@
-#ifndef PKEngine_PKEngine_H
-#define PKEngine_PKEngine_H
+#ifndef PKENGINE_PKENGINE_H
+#define PKENGINE_PKENGINE_H
 
 #include <Core/PKBase.h>
 
@@ -64,4 +64,4 @@ namespace pkengine
 	}
 }
 
-#endif // !PKEngine_PKEngine_H
+#endif // !PKENGINE_PKENGINE_H

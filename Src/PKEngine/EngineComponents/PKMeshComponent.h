@@ -1,5 +1,5 @@
-#ifndef PKENGINE_MESHCOMPONENT_H
-#define PKENGINE_MESHCOMPONENT_H
+#ifndef PKENGINE_PKMESHCOMPONENT_H
+#define PKENGINE_PKMESHCOMPONENT_H
 
 #include <Core/PKBase.h>
 #include <Game/PKBehaviour.h>
@@ -8,12 +8,12 @@ namespace pkengine
 {
 	class CRenderer;
 
-	class CMeshComponent : public CPKBehaviour_Internal
+	class CMeshComponent : public CBehaviour_Internal
 	{
 		friend CRenderer;
 
 	public:
-		CMeshComponent(CGameObject* InOwner) : CPKBehaviour_Internal(InOwner)
+		CMeshComponent(CGameObject* InOwner) : CBehaviour_Internal(InOwner)
 		{
 			RendererIndex = -1;
 		}
@@ -34,4 +34,4 @@ namespace pkengine
 	};
 }
 
-#endif // !PKENGINE_MESHCOMPONENT_H
+#endif // !PKENGINE_PKMESHCOMPONENT_H

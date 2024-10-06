@@ -6,7 +6,7 @@
 
 namespace pkengine
 {
-	class CMovementBehaviour : public CPKBehaviour
+	class CMovementBehaviour : public CBehaviour
 	{
 	public:
 		CMovementBehaviour(CGameObject* InOwner);

@@ -6,8 +6,8 @@
 namespace pkengine
 {
 	class CMeshComponent;
-	class CPKBehaviour_Internal;
-	class CPKBehaviour;
+	class CBehaviour_Internal;
+	class CBehaviour;
 	class CPKEngine;
 	class CPKGame;
 
@@ -54,17 +54,17 @@ namespace pkengine
 		char Name[32];
 		CMeshComponent* MeshComponent;
 
-		containers::umap<size_t, CPKBehaviour*> Behaviours;
-		typedef containers::umap<size_t, CPKBehaviour*>::iterator BehavioursIterator;
+		containers::umap<size_t, CBehaviour*> Behaviours;
+		typedef containers::umap<size_t, CBehaviour*>::iterator BehavioursIterator;
 	};
 
 	template<typename T>
 	T* CGameObject::AddBehaviour_Internal()
 	{
-		static_assert(std::is_base_of<CPKBehaviour_Internal, T>());
+		static_assert(std::is_base_of<CBehaviour_Internal, T>());
 
 		T* NewBehaviour = new T(this);
-		CPKBehaviour_Internal* BehaviourBase = static_cast<CPKBehaviour_Internal*>(NewBehaviour);
+		CBehaviour_Internal* BehaviourBase = static_cast<CBehaviour_Internal*>(NewBehaviour);
 		if (BehaviourBase->CheckConstruct() == false)
 		{
 			delete NewBehaviour;
@@ -77,7 +77,7 @@ namespace pkengine
 	template<typename T>
 	T* CGameObject::AddBehaviour()
 	{
-		static_assert(std::is_base_of<CPKBehaviour, T>());
+		static_assert(std::is_base_of<CBehaviour, T>());
 
 		size_t typehash = typeid(T).hash_code();
 		if (Behaviours.find(typehash) != Behaviours.end())
@@ -89,7 +89,7 @@ namespace pkengine
 		T* NewBehaviour = AddBehaviour_Internal<T>();
 		if (NewBehaviour != nullptr)
 		{
-			Behaviours.insert({ typehash, static_cast<CPKBehaviour*>(NewBehaviour) });
+			Behaviours.insert({ typehash, static_cast<CBehaviour*>(NewBehaviour) });
 		}
 		
 		return NewBehaviour;
@@ -98,7 +98,7 @@ namespace pkengine
 	template<typename T>
 	T* CGameObject::GetBehaviour()
 	{
-		static_assert(std::is_base_of<CPKBehaviour, T>());
+		static_assert(std::is_base_of<CBehaviour, T>());
 
 		size_t typehash = typeid(T).hash_code();
 		BehavioursIterator it = Behaviours.find(typehash);

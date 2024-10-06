@@ -3,7 +3,7 @@
 
 namespace pkengine
 {
-	CMovementBehaviour::CMovementBehaviour(CGameObject* InOwner) : CPKBehaviour(InOwner)
+	CMovementBehaviour::CMovementBehaviour(CGameObject* InOwner) : CBehaviour(InOwner)
 	{
 		LeftKey = EKeyCode::KeyCode_A;
 		RightKey = EKeyCode::KeyCode_D;
