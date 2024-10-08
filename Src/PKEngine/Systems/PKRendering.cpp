@@ -86,7 +86,7 @@ namespace pkengine
         Instance->RemoveMeshFromBuffer(MeshComponent);
     }
 
-    void CRenderer::Draw()
+    void CRenderer::Update()
     {
         assert(bInit());
         Instance->InternalDraw();

@@ -8,6 +8,7 @@
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtx/matrix_decompose.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 namespace pkengine
 {
@@ -21,6 +22,7 @@ namespace pkengine
 
 	public:
 		static inline FVector3 Zero() { return FVector3(); }
+		static inline FVector3 One() { return FVector3(1.0f, 1.0f, 1.0f); }
 		static inline FVector3 Up() { return FVector3(0.0f, 1.0f, 0.0f); }
 		static inline FVector3 Down() { return FVector3(0.0f, -1.0f, 0.0f); }
 		static inline FVector3 Left() { return FVector3(-1.0f, 0.0f, 0.0f); }
@@ -234,19 +236,25 @@ namespace pkengine
 			operator=(Other);
 		}
 
-		inline void SetPosition(FVector3 InPosition)
+		inline void SetPosition(const FVector3& InPosition)
 		{
 			glmPosition = InPosition.glmVector;
 			bTransformDirty = true;
 		}
 
-		inline void SetScale(FVector3 InScale)
+		inline void SetScale(const FVector3& InScale)
 		{
 			glmScale = InScale.glmVector;
 			bTransformDirty = true;
 		}
 
-		inline void Rotate(float Degrees, FVector3 Axis)
+		inline void SetRotation(const FVector3& up)
+		{
+			glmRotation = glm::quatLookAt(glm::vec3(0.0f, 0.0f, 1.0f), up.glmVector);
+			bTransformDirty = true;
+		}
+
+		inline void Rotate(float Degrees, const FVector3& Axis)
 		{
 			glmRotation = glm::rotate(glmRotation, Degrees, Axis.glmVector);
 			bTransformDirty = true;
@@ -273,6 +281,11 @@ namespace pkengine
 		{
 			return FVector3(glm::mat4(glmRotation) * glm::vec4(0.0f, 1.0f, 0.0f, 0.0f));
 		}
+
+		inline FVector3 GetRight()
+		{
+			return FVector3(glm::mat4(glmRotation) * glm::vec4(1.0f, 0.0f, 0.0f, 0.0f));
+		}
 	};
 
 	struct FCollision
@@ -283,6 +296,10 @@ namespace pkengine
 
 		FCollision(class CCollider* col, const FVector3& p, const FVector3& n)
 			: collider(col), point(p), normal(n)
+		{}
+
+		FCollision()
+			: collider(nullptr), point(), normal(1.0f, 0.0f)
 		{}
 	};
 }

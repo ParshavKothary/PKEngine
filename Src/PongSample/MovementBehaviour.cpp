@@ -41,6 +41,7 @@ namespace pkengine
 		if (RightDir == 0.0f && UpDir == 0.0f) return;
 
 		FVector3 Translation = Owner->GetTransform()->GetUp() * UpDir * CTime::GetDeltaTime() * MoveSpeed;
+		Translation += Owner->GetTransform()->GetRight() * RightDir * CTime::GetDeltaTime() * MoveSpeed;
 		Owner->GetTransform()->SetPosition((Owner->GetTransform()->GetPosition() + Translation));
 	}
 	
@@ -48,11 +49,11 @@ namespace pkengine
 	{
 		float Rotation = 0.0f;
 
-		if (CInput::GetKey(RightKey)) Rotation = 1.0f;
-		else if (CInput::GetKey(LeftKey)) Rotation = -1.0f;
+		if (CInput::GetKey(EKeyCode::KeyCode_E)) Rotation = -1.0f;
+		else if (CInput::GetKey(EKeyCode::KeyCode_Q)) Rotation = 1.0f;
 
 		if (Rotation == 0.0f) return;
 
-		Owner->GetTransform()->Rotate(Rotation * CTime::GetDeltaTime() * MoveSpeed * 5.0f, FVector3::Backward());
+		Owner->GetTransform()->Rotate(Rotation * CTime::GetDeltaTime() * MoveSpeed * 5.0f, FVector3::Forward());
 	}
 }

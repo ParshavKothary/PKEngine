@@ -32,7 +32,7 @@ namespace pkengine
 		static bool RegisterMesh(CMeshComponent* MeshComponent);
 		static void UnregisterMesh(CMeshComponent* MeshComponent);
 
-		static void Draw();
+		static void Update();
 
 	private:
 

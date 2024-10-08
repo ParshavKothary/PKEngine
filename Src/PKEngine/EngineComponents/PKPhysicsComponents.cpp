@@ -29,6 +29,29 @@ namespace pkengine
 		CollisionHandlers.push_back(Handler);
 	}
 
+	void CCollider::OnCollision(const FCollision& collision)
+	{
+		for (CCollisionHandler* Handler : CollisionHandlers)
+		{
+			Handler->OnCollision(collision);
+		}
+	}
+
+	void CCollider::UpdatePoints()
+	{
+		FTransform& xform = *(GetOwner()->GetTransform());
+
+		points[0] = FVector3(min.GetX(), max.GetY(), 0.0f);
+		points[1] = FVector3(max.GetX(), min.GetY(), 0.0f);
+		points[2] = max;
+		points[3] = min;
+
+		for (FVector3& point : points)
+		{
+			point = xform * point;
+		}
+	}
+
 	void CCollisionHandler::Start()
 	{
 		CCollider* OwnerCollider = Owner->GetBehaviour<CCollider>();

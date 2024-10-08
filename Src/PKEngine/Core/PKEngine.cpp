@@ -75,7 +75,7 @@ namespace pkengine
 
             Game->Update();
 
-            CRenderer::Draw();
+            CRenderer::Update();
 
             bShouldExit = glfwWindowShouldClose(CRenderer::GetWindow()) ||
                 CInput::GetKeyUp(EKeyCode::KeyCode_ESCAPE);
