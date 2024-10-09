@@ -101,13 +101,13 @@ namespace pkengine
 		if (minA <= maxB && minA >= minB)
 		{
 			overlap = maxB - minA;
-			point = minPointA;
+			point = testNormal.isA ? maxPointB : minPointA;
 		}
 		else if (minB <= maxA && minB >= minA)
 		{
 			overlap = maxA - minB;
 			flipN = true;
-			point = minPointB;
+			point = testNormal.isA ? minPointB : maxPointA;
 		}
 	}
 
