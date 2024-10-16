@@ -156,6 +156,16 @@ namespace pkengine
 			glm::normalize(glmVector);
 		}
 
+		inline FVector3 Project(const FVector3& axis)
+		{
+			return axis * Dot(axis);
+		}
+
+		inline FVector3 Cross(const FVector3& other)
+		{
+			return FVector3(glm::cross(glmVector, other.glmVector));
+		}
+
 		#pragma endregion
 
 		inline std::string ToString() const
@@ -288,6 +298,14 @@ namespace pkengine
 		}
 	};
 
+	struct FEdge
+	{
+		FVector3 a;
+		FVector3 b;
+
+		FEdge() : a(), b() {}
+	};
+
 	struct FCollision
 	{
 		class CCollider* collider;
@@ -302,6 +320,14 @@ namespace pkengine
 			: collider(nullptr), point(), normal(1.0f, 0.0f)
 		{}
 	};
+
+	namespace pkfloat
+	{
+		inline bool IsClose(float a, float b, float threshold = 0.000001f)
+		{
+			return abs(a - b) < threshold;
+		}
+	}
 }
 
 #endif // !PKENGINE_PKMATH_H

@@ -11,53 +11,6 @@ namespace pkengine
 	CPhysics::ICollisionMap CPhysics::CollisionMap = CPhysics::ICollisionMap();
 	unsigned int CPhysics::NumColliders = 0;
 
-	/*
-	void SATtest(const Vector3f& axis, const vector<Vector3f>& ptSet, float& minAlong, float& maxAlong)
-	{
-		minAlong = HUGE, maxAlong = -HUGE;
-		for (int i = 0; i < ptSet.size(); i++)
-		{
-			// just dot it to get the min/max along this axis.
-			float dotVal = ptSet[i].dot(axis);
-			if (dotVal < minAlong)  minAlong = dotVal;
-			if (dotVal > maxAlong)  maxAlong = dotVal;
-		}
-	}
-
-	// Shape1 and Shape2 must be CONVEX HULLS
-	bool intersects(Shape shape1, Shape shape2)
-	{
-		// Get the normals for one of the shapes,
-		for (int i = 0; i < shape1.normals.size(); i++)
-		{
-			float shape1Min, shape1Max, shape2Min, shape2Max;
-			SATtest(normals[i], shape1.corners, shape1Min, shape1Max);
-			SATtest(normals[i], shape2.corners, shape2Min, shape2Max);
-			if (!overlaps(shape1Min, shape1Max, shape2Min, shape2Max))
-			{
-				return 0; // NO INTERSECTION
-			}
-
-			// otherwise, go on with the next test
-		}
-
-		// TEST SHAPE2.normals as well
-
-		// if overlap occurred in ALL AXES, then they do intersect
-		return 1;
-	}
-
-	bool overlaps(float min1, float max1, float min2, float max2)
-	{
-		return isBetweenOrdered(min2, min1, max1) || isBetweenOrdered(min1, min2, max2);
-	}
-
-	inline bool isBetweenOrdered(float val, float lowerBound, float upperBound) {
-		return lowerBound <= val && val <= upperBound;
-	}
-
-	*/
-
 	struct FTestNormal
 	{
 		FVector3 n;
@@ -67,72 +20,211 @@ namespace pkengine
 			n(inn), isA(inisA) {}
 	};
 
-	FVector3 GetProj(const FVector3(&points)[4], const FVector3& axis, float& min, float& max, FVector3& minPoint, FVector3& maxPoint)
+	struct FProjResult
 	{
-		minPoint = points[0];
-		min = minPoint.Dot(axis);
+		union
+		{
+			FEdge minEdge;
+			FVector3 minPoint;
+		};
+
+		union
+		{
+			FEdge maxEdge;
+			FVector3 maxPoint;
+		};
+
+		bool isEdge;
+
+		FProjResult() :
+			minEdge(),
+			maxEdge(),
+			isEdge(false)
+		{}
+
+		FProjResult(const FProjResult& other)
+		{
+			isEdge = other.isEdge;
+
+			if (isEdge)
+			{
+				minEdge = other.minEdge;
+				maxEdge = other.maxEdge;
+			}
+			else
+			{
+				minPoint = other.minPoint;
+				maxPoint = other.maxPoint;
+			}
+		}
+
+		FProjResult& operator=(const FProjResult& other)
+		{
+			isEdge = other.isEdge;
+
+			if (isEdge)
+			{
+				minEdge = other.minEdge;
+				maxEdge = other.maxEdge;
+			}
+			else
+			{
+				minPoint = other.minPoint;
+				maxPoint = other.maxPoint;
+			}
+
+			return *this;
+		}
+	};
+
+	struct FOverlap
+	{
+		FVector3 point;
+		FTestNormal normal;
+		float overlap;
+		bool isEdgeEdge;
+
+		FOverlap() :
+			point(),
+			normal(FVector3(1.0f, 0.0f), false),
+			overlap(-1.0f),
+			isEdgeEdge(false) {}
+	};
+
+	FProjResult GetProj(const CCollider* Collider, const FVector3& axis, float& min, float& max)
+	{
+		const FVector3(&points)[4] = Collider->GetPoints();
+
+		FProjResult result;
+		result.minPoint = points[0];
+		result.maxPoint = points[0];
+		min = result.minPoint.Dot(axis);
 		max = min;
 
 		for (const FVector3& point : points)
 		{
 			float dot = point.Dot(axis);
-			if (dot < min)
+			if (dot <= min)
 			{
-				min = dot;
-				minPoint = point;
+				if (dot == min)
+				{
+					result.isEdge = true;
+					result.minEdge.b = point;
+				}
+				else
+				{
+					min = dot;
+					result.isEdge = false;
+					result.minPoint = point;
+				}
 			}
-			if (dot > max)
+			if (dot >= max)
 			{
-				max = dot;
-				maxPoint = point;
+				if (dot == max)
+				{
+					result.isEdge = true;
+					result.maxEdge.b = point;
+				}
+				else
+				{
+					max = dot;
+					result.isEdge = false;
+					result.maxPoint = point;
+				}
 			}
 		}
 
-		return minPoint;
+		return result;
 	}
 
-	void GetOverlap(const FVector3(&pointsA)[4], const FVector3(&pointsB)[4], const FTestNormal& testNormal, FVector3& point, float& overlap, bool& flipN)
+	FOverlap GetOverlap(const CCollider* ColliderA, CCollider* ColliderB, const FTestNormal& testNormal)
 	{
+		FOverlap result;
+
 		float minA, maxA, minB, maxB;
-		FVector3 minPointA, minPointB, maxPointA, maxPointB;
-		GetProj(pointsA, testNormal.n, minA, maxA, minPointA, maxPointA);
-		GetProj(pointsB, testNormal.n, minB, maxB, minPointB, maxPointB);
+		FProjResult projResA, projResB;
+		projResA = GetProj(ColliderA, testNormal.n, minA, maxA);
+		projResB = GetProj(ColliderB, testNormal.n, minB, maxB);
+
+		result.normal.n = testNormal.n;
+		result.normal.isA = testNormal.isA;
 
 		if (minA <= maxB && minA >= minB)
 		{
-			overlap = maxB - minA;
-			point = testNormal.isA ? maxPointB : minPointA;
+			result.overlap = maxB - minA;
+			result.point = testNormal.isA ? projResB.maxPoint : projResA.minPoint;
+
+			result.isEdgeEdge = projResB.isEdge && projResA.isEdge;
 		}
 		else if (minB <= maxA && minB >= minA)
 		{
-			overlap = maxA - minB;
-			flipN = true;
-			point = testNormal.isA ? minPointB : maxPointA;
+			result.overlap = maxA - minB;
+			result.point = testNormal.isA ? projResB.minPoint : projResA.maxPoint;
+			result.normal.n = testNormal.n * -1.0f;
+
+			result.isEdgeEdge = projResB.isEdge && projResA.isEdge;
 		}
+
+		return result;
 	}
 
-	bool CollisionTest(const FVector3(&pointsA)[4], const FVector3(&pointsB)[4], const FTestNormal (&testNormals)[4], FVector3& point, FVector3& normal)
+	bool CollisionTest(CCollider* ColliderA, CCollider* ColliderB, FVector3& point, FVector3& normal)
 	{
-		float minOverlap = 99999.0f;
+		FOverlap minOverlap;
+		minOverlap.overlap = 9999999.0f;
 
-		FVector3 testPoint;
+		FTestNormal testNormals[] =
+		{
+			FTestNormal(ColliderA->GetOwner()->GetTransform()->GetUp(), true), FTestNormal(ColliderA->GetOwner()->GetTransform()->GetRight(), true),
+			FTestNormal(ColliderB->GetOwner()->GetTransform()->GetUp(), false), FTestNormal(ColliderB->GetOwner()->GetTransform()->GetRight(), false)
+		};
+
 		for (const FTestNormal& testNormal : testNormals)
 		{
-			float overlap = -1.0f;
-			bool flipN = false;
-			GetOverlap(pointsA, pointsB, testNormal, testPoint, overlap, flipN);
+			FOverlap overlap = GetOverlap(ColliderA, ColliderB, testNormal);
 
-			if (overlap < 0.0f)
+			if (overlap.overlap < 0.0f)
 			{
-				return false;
+				return false; // found a separating axis!
 			}
 
-			if (overlap < minOverlap)
+			if (overlap.overlap < minOverlap.overlap)
 			{
 				minOverlap = overlap;
-				normal = testNormal.n * (flipN ? -1.0f : 1.0f);
-				point = testPoint;
 			}
+		}
+
+		if (minOverlap.isEdgeEdge)
+		{
+			normal = minOverlap.normal.n;
+			FVector3 start = minOverlap.point.Project(normal);
+			FVector3 otherAxis = normal.Cross(FVector3::Forward());
+
+			float otherLen = 1.0f;
+
+			float minA, maxA, minB, maxB;
+			FProjResult projResA, projResB;
+			projResA = GetProj(ColliderA, otherAxis, minA, maxA);
+			projResB = GetProj(ColliderB, otherAxis, minB, maxB);
+
+
+			if (minA <= maxB && minA >= minB)
+			{
+				float diff = fminf(maxB, maxA) - minA;
+				otherLen  = minA + (diff * 0.5f);
+			}
+			else if (minB <= maxA && minB >= minA)
+			{
+				float diff = fminf(maxA, maxB) - minB;
+				otherLen  = minB + (diff * 0.5f);
+			}
+
+			point = start + (otherAxis * otherLen);
+		}
+		else
+		{
+			normal = minOverlap.normal.n;
+			point = minOverlap.point;
 		}
 
 		return true;
@@ -145,24 +237,19 @@ namespace pkengine
 			Collider->UpdatePoints();
 		}
 
-		for (CCollider* ColliderA : Colliders)
+		IColliderList::iterator iterA = Colliders.begin();
+		while (iterA != Colliders.end())
 		{
-			FTestNormal testNormals[] =
+			IColliderList::iterator iterB = iterA;
+			++iterB;
+			while (iterB != Colliders.end())
 			{
-				FTestNormal(ColliderA->GetOwner()->GetTransform()->GetUp(), true), FTestNormal(ColliderA->GetOwner()->GetTransform()->GetRight(), true),
-				FTestNormal(FVector3(), false), FTestNormal(FVector3(), false)
-			};
-
-			for (CCollider* ColliderB : Colliders)
-			{
-				if (ColliderA == ColliderB) continue;
-
-				testNormals[2].n = ColliderB->GetOwner()->GetTransform()->GetUp();
-				testNormals[3].n = ColliderB->GetOwner()->GetTransform()->GetRight();
+				CCollider* ColliderA = *iterA;
+				CCollider* ColliderB = *iterB;
 
 				FVector3 point;
 				FVector3 normal;
-				bool isColliding = CollisionTest(ColliderA->GetPoints(), ColliderB->GetPoints(), testNormals, point, normal);
+				bool isColliding = CollisionTest(ColliderA, ColliderB, point, normal);
 
 				if (isColliding)
 				{
@@ -174,7 +261,11 @@ namespace pkengine
 					RemoveFromCollisionMap(ColliderA, ColliderB);
 					RemoveFromCollisionMap(ColliderB, ColliderA);
 				}
+
+				++iterB;
 			}
+
+			++iterA;
 		}
 
 		ICollisionMap::iterator iter = CollisionMap.begin();
