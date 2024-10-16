@@ -22,75 +22,33 @@ namespace pkengine
 
 	struct FProjResult
 	{
-		union
-		{
-			FEdge minEdge;
-			FVector3 minPoint;
-		};
-
-		union
-		{
-			FEdge maxEdge;
-			FVector3 maxPoint;
-		};
+		FVector3 minPoint;
+		FVector3 maxPoint;
 
 		bool isEdge;
 
 		FProjResult() :
-			minEdge(),
-			maxEdge(),
+			minPoint(),
+			maxPoint(),
 			isEdge(false)
 		{}
-
-		FProjResult(const FProjResult& other)
-		{
-			isEdge = other.isEdge;
-
-			if (isEdge)
-			{
-				minEdge = other.minEdge;
-				maxEdge = other.maxEdge;
-			}
-			else
-			{
-				minPoint = other.minPoint;
-				maxPoint = other.maxPoint;
-			}
-		}
-
-		FProjResult& operator=(const FProjResult& other)
-		{
-			isEdge = other.isEdge;
-
-			if (isEdge)
-			{
-				minEdge = other.minEdge;
-				maxEdge = other.maxEdge;
-			}
-			else
-			{
-				minPoint = other.minPoint;
-				maxPoint = other.maxPoint;
-			}
-
-			return *this;
-		}
 	};
 
 	struct FOverlap
 	{
 		FVector3 point;
-		FTestNormal normal;
+		FVector3 normal;
 		float overlap;
 		bool isEdgeEdge;
 
 		FOverlap() :
 			point(),
-			normal(FVector3(1.0f, 0.0f), false),
+			normal(1.0f, 0.0f),
 			overlap(-1.0f),
 			isEdgeEdge(false) {}
 	};
 
+	// returns min/max points along axis, and if they are edges
 	FProjResult GetProj(const CCollider* Collider, const FVector3& axis, float& min, float& max)
 	{
 		const FVector3(&points)[4] = Collider->GetPoints();
@@ -104,75 +62,63 @@ namespace pkengine
 		for (const FVector3& point : points)
 		{
 			float dot = point.Dot(axis);
-			if (dot <= min)
+			if (dot < min)
 			{
-				if (dot == min)
-				{
-					result.isEdge = true;
-					result.minEdge.b = point;
-				}
-				else
-				{
-					min = dot;
-					result.isEdge = false;
-					result.minPoint = point;
-				}
+				min = dot;
+				result.minPoint = point;
 			}
-			if (dot >= max)
+			if (dot > max)
 			{
-				if (dot == max)
-				{
-					result.isEdge = true;
-					result.maxEdge.b = point;
-				}
-				else
-				{
-					max = dot;
-					result.isEdge = false;
-					result.maxPoint = point;
-				}
+				max = dot;
+				result.maxPoint = point;
 			}
+		}
+
+		// check if edge
+		{
+			const FVector3 up = Collider->GetOwner()->GetTransform()->GetUp();
+			const float dot = fabsf(up.Dot(axis));
+			result.isEdge = pkfloat::IsClose(dot, 1.0f) || pkfloat::IsClose(dot, 0.0f);
 		}
 
 		return result;
 	}
 
+	// returns amount of overlap, normal and point
 	FOverlap GetOverlap(const CCollider* ColliderA, CCollider* ColliderB, const FTestNormal& testNormal)
 	{
 		FOverlap result;
 
 		float minA, maxA, minB, maxB;
-		FProjResult projResA, projResB;
-		projResA = GetProj(ColliderA, testNormal.n, minA, maxA);
-		projResB = GetProj(ColliderB, testNormal.n, minB, maxB);
+		FProjResult projResA = GetProj(ColliderA, testNormal.n, minA, maxA);
+		FProjResult projResB = GetProj(ColliderB, testNormal.n, minB, maxB);
 
-		result.normal.n = testNormal.n;
-		result.normal.isA = testNormal.isA;
+		result.normal = testNormal.n;
+		result.isEdgeEdge = projResB.isEdge && projResA.isEdge;
 
 		if (minA <= maxB && minA >= minB)
 		{
 			result.overlap = maxB - minA;
 			result.point = testNormal.isA ? projResB.maxPoint : projResA.minPoint;
 
-			result.isEdgeEdge = projResB.isEdge && projResA.isEdge;
 		}
 		else if (minB <= maxA && minB >= minA)
 		{
 			result.overlap = maxA - minB;
 			result.point = testNormal.isA ? projResB.minPoint : projResA.maxPoint;
-			result.normal.n = testNormal.n * -1.0f;
-
-			result.isEdgeEdge = projResB.isEdge && projResA.isEdge;
+			result.normal = testNormal.n * -1.0f;
 		}
 
 		return result;
 	}
 
+	// If colliding, sets collision point and normal and returns true
 	bool CollisionTest(CCollider* ColliderA, CCollider* ColliderB, FVector3& point, FVector3& normal)
 	{
 		FOverlap minOverlap;
 		minOverlap.overlap = 9999999.0f;
 
+		// testing against up and right axii of each collider
 		FTestNormal testNormals[] =
 		{
 			FTestNormal(ColliderA->GetOwner()->GetTransform()->GetUp(), true), FTestNormal(ColliderA->GetOwner()->GetTransform()->GetRight(), true),
@@ -188,6 +134,7 @@ namespace pkengine
 				return false; // found a separating axis!
 			}
 
+			// keep track of min overlap to get collision point
 			if (overlap.overlap < minOverlap.overlap)
 			{
 				minOverlap = overlap;
@@ -196,34 +143,38 @@ namespace pkengine
 
 		if (minOverlap.isEdgeEdge)
 		{
-			normal = minOverlap.normal.n;
-			FVector3 start = minOverlap.point.Project(normal);
-			FVector3 otherAxis = normal.Cross(FVector3::Forward());
+			// when edges collide perfectly, find 'middle' of overlap along axis perpendicular to collision normal
 
-			float otherLen = 1.0f;
+			normal = minOverlap.normal;
+			FVector3 start = minOverlap.point.Project(normal); // start is collision point along normal
+
+			// to find how much 'other axis' we need to add to start, find overlap along that axis first and then calculate middle
+			FVector3 otherAxis = normal.Cross(FVector3::Forward());
 
 			float minA, maxA, minB, maxB;
 			FProjResult projResA, projResB;
 			projResA = GetProj(ColliderA, otherAxis, minA, maxA);
 			projResB = GetProj(ColliderB, otherAxis, minB, maxB);
 
-
+			float otherLen = 0.0f;
+			float otherOverlap = 0.0f;
 			if (minA <= maxB && minA >= minB)
 			{
-				float diff = fminf(maxB, maxA) - minA;
-				otherLen  = minA + (diff * 0.5f);
+				otherLen = minA;
+				otherOverlap = fminf(maxB, maxA) - minA;
 			}
 			else if (minB <= maxA && minB >= minA)
 			{
-				float diff = fminf(maxA, maxB) - minB;
-				otherLen  = minB + (diff * 0.5f);
+				otherLen = minB;
+				otherOverlap = fminf(maxA, maxB) - minB;
 			}
 
+			otherLen += (otherOverlap * 0.5f);
 			point = start + (otherAxis * otherLen);
 		}
 		else
 		{
-			normal = minOverlap.normal.n;
+			normal = minOverlap.normal;
 			point = minOverlap.point;
 		}
 
@@ -237,6 +188,7 @@ namespace pkengine
 			Collider->UpdatePoints();
 		}
 
+		// do each collider/collider check
 		IColliderList::iterator iterA = Colliders.begin();
 		while (iterA != Colliders.end())
 		{
@@ -251,6 +203,7 @@ namespace pkengine
 				FVector3 normal;
 				bool isColliding = CollisionTest(ColliderA, ColliderB, point, normal);
 
+				// have to add/remove from each collider's own map
 				if (isColliding)
 				{
 					AddToCollisionMap(ColliderA, ColliderB, point, normal);
@@ -268,6 +221,7 @@ namespace pkengine
 			++iterA;
 		}
 
+		// send collision for each map entry
 		ICollisionMap::iterator iter = CollisionMap.begin();
 		while (iter != CollisionMap.end())
 		{

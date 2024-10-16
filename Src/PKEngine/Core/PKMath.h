@@ -287,12 +287,12 @@ namespace pkengine
 			return FVector3(glmMatrix * glm::vec4(Vector.glmVector, 1.0f));
 		}
 
-		inline FVector3 GetUp()
+		inline FVector3 GetUp() const
 		{
 			return FVector3(glm::mat4(glmRotation) * glm::vec4(0.0f, 1.0f, 0.0f, 0.0f));
 		}
 
-		inline FVector3 GetRight()
+		inline FVector3 GetRight() const
 		{
 			return FVector3(glm::mat4(glmRotation) * glm::vec4(1.0f, 0.0f, 0.0f, 0.0f));
 		}
