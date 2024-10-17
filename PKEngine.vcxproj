@@ -23,6 +23,7 @@
     <ClCompile Include="Src\External\glm\detail\glm.cpp" />
     <ClCompile Include="Src\Main.cpp" />
     <ClCompile Include="Src\PKEngine\Core\PKEngine.cpp" />
+    <ClCompile Include="Src\PKEngine\EngineComponents\PKCamera.cpp" />
     <ClCompile Include="Src\PKEngine\EngineComponents\PKMeshComponent.cpp" />
     <ClCompile Include="Src\PKEngine\EngineComponents\PKPhysicsComponents.cpp" />
     <ClCompile Include="Src\PKEngine\Game\PKBehaviour.cpp" />
@@ -328,6 +329,7 @@
     <ClInclude Include="Src\PKEngine\Core\PKEngine.h" />
     <ClInclude Include="Src\PKEngine\Core\PKMath.h" />
     <ClInclude Include="Src\PKEngine\Core\PKTypes.h" />
+    <ClInclude Include="Src\PKEngine\EngineComponents\PKCamera.h" />
     <ClInclude Include="Src\PKEngine\EngineComponents\PKMeshComponent.h" />
     <ClInclude Include="Src\PKEngine\EngineComponents\PKPhysicsComponents.h" />
     <ClInclude Include="Src\PKEngine\Game\PKBehaviour.h" />

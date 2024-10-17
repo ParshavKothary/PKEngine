@@ -32,7 +32,7 @@ namespace pkengine
 		static bool RegisterMesh(CMeshComponent* MeshComponent);
 		static void UnregisterMesh(CMeshComponent* MeshComponent);
 
-		static void Update();
+		static void Update(FTransform* CameraTransform);
 
 	private:
 
@@ -51,16 +51,18 @@ namespace pkengine
 		void RemoveMeshFromBuffer(CMeshComponent* MeshComponent);
 		void TransformAndCopyMeshVertices(CMeshComponent* MeshComponent);
 
-		void InternalDraw();
+		void InternalDraw(FTransform* CameraTransform);
 
 		GLFWwindow* Window;
+		float AspectRatio;
 
 		unsigned int ShaderProgram;
+		unsigned int CameraTransformLocation;
 		unsigned int VBO;
 		unsigned int VAO;
 
-		std::list<CMeshComponent*> MeshComponents;
-		std::vector<FVertexData> VertexData;
+		containers::list<CMeshComponent*> MeshComponents;
+		containers::vector<FVertexData> VertexData;
 		unsigned int NumActiveVerts;
 	};
 }

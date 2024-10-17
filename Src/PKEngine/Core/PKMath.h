@@ -44,11 +44,19 @@ namespace pkengine
 
 		FVector3(const FVector3& Other) : glmVector(Other.glmVector) {}
 
+		FVector3(FVector3&& Other) noexcept : glmVector(Other.glmVector) {}
+
 		#pragma endregion
 
 		#pragma region Operators
 
 		inline FVector3& operator=(const FVector3& Other)
+		{
+			glmVector = Other.glmVector;
+			return *this;
+		}
+
+		inline FVector3& operator=(FVector3&& Other) noexcept
 		{
 			glmVector = Other.glmVector;
 			return *this;
@@ -210,10 +218,9 @@ namespace pkengine
 			bTransformDirty = false;
 		}
 
-		FTransform& operator=(const glm::mat4& OtherGlmMatrix)
+		FTransform& operator=(const glm::mat4& OtherGlmMatrix) noexcept
 		{
 			glmMatrix = OtherGlmMatrix;
-			glmPosition = glmMatrix * glm::vec4(0.0f);
 
 			glm::vec3 perspective;
 			glm::vec4 skew;
@@ -229,21 +236,75 @@ namespace pkengine
 		}
 
 	public:
-		
-		FTransform() : FTransform(glm::mat4(1.0f)) {}
+
+		FTransform(): FTransform(glm::mat4(1.0f)) {}
 
 		FTransform& operator=(const FTransform& Other)
 		{
-			glmPosition = Other.glmPosition;
-			glmRotation = Other.glmRotation;
-			glmScale = Other.glmScale;
-			Recalculate();
+			glmMatrix = glm::mat4();
+			bTransformDirty = Other.bTransformDirty;
+			if (Other.bTransformDirty)
+			{
+				glmPosition = Other.glmPosition;
+				glmRotation = Other.glmRotation;
+				glmScale = Other.glmScale;
+			}
+			else
+			{
+				operator=(Other.glmMatrix);
+			}
+
+			return *this;
+		}
+
+		FTransform& operator=(FTransform&& Other) noexcept
+		{
+			glmMatrix = glm::mat4();
+			bTransformDirty = Other.bTransformDirty;
+			if (Other.bTransformDirty)
+			{
+				glmPosition = Other.glmPosition;
+				glmRotation = Other.glmRotation;
+				glmScale = Other.glmScale;
+			}
+			else
+			{
+				operator=(Other.glmMatrix);
+			}
+
 			return *this;
 		}
 
 		FTransform(const FTransform& Other)
 		{
-			operator=(Other);
+			glmMatrix = glm::mat4();
+			bTransformDirty = Other.bTransformDirty;
+			if (Other.bTransformDirty)
+			{
+				glmPosition = Other.glmPosition;
+				glmRotation = Other.glmRotation;
+				glmScale = Other.glmScale;
+			}
+			else
+			{
+				operator=(Other.glmMatrix);
+			}
+		}
+
+		FTransform(FTransform&& Other) noexcept
+		{
+			glmMatrix = glm::mat4();
+			bTransformDirty = Other.bTransformDirty;
+			if (Other.bTransformDirty)
+			{
+				glmPosition = Other.glmPosition;
+				glmRotation = Other.glmRotation;
+				glmScale = Other.glmScale;
+			}
+			else
+			{
+				operator=(Other.glmMatrix);
+			}
 		}
 
 		inline void SetPosition(const FVector3& InPosition)
@@ -264,9 +325,15 @@ namespace pkengine
 			bTransformDirty = true;
 		}
 
-		inline void Rotate(float Degrees, const FVector3& Axis)
+		inline void SetRotation(const FVector3& forward, const FVector3& up)
 		{
-			glmRotation = glm::rotate(glmRotation, Degrees, Axis.glmVector);
+			glmRotation = glm::quatLookAt(forward.glmVector, up.glmVector);
+			bTransformDirty = true;
+		}
+
+		inline void Rotate(float rad, const FVector3& Axis)
+		{
+			glmRotation = glm::rotate(glmRotation, rad, Axis.glmVector);
 			bTransformDirty = true;
 		}
 
@@ -295,6 +362,18 @@ namespace pkengine
 		inline FVector3 GetRight() const
 		{
 			return FVector3(glm::mat4(glmRotation) * glm::vec4(1.0f, 0.0f, 0.0f, 0.0f));
+		}
+
+		inline FTransform GetInverse()
+		{
+			CheckedRecalculate();
+			return FTransform(glm::inverse(glmMatrix));
+		}
+
+		inline const glm::mat4& GetGLM()
+		{
+			CheckedRecalculate();
+			return glmMatrix;
 		}
 	};
 

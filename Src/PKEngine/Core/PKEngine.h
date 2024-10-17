@@ -7,6 +7,7 @@ namespace pkengine
 {
 	class CGame;
 	class CGameObject;
+	class CCamera;
 
 	class CPKEngine
 	{
@@ -16,7 +17,9 @@ namespace pkengine
 
 		void RunGame();
 
-		CGame* GetGame() { return Game; }
+		inline CGame* GetGame() const { return Game; }
+
+		inline CCamera* GetCamera() const { return Camera; }
 
 		template<typename T>
 		T* CreateGame(const int WindowWidth, const int WindowHeight, const char* GameTitle);
@@ -31,6 +34,7 @@ namespace pkengine
 		bool bShouldExit;
 
 		CGame* Game;
+		CCamera* Camera;
 	};
 
 	template<typename T>

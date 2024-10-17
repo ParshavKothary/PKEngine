@@ -1,4 +1,5 @@
 #include <Core/PKEngine.h>
+#include <EngineComponents/PKCamera.h>
 #include <Game/PKGame.h>
 #include <Game/PKGameObject.h>
 #include <Game/PKBehaviour.h>
@@ -22,6 +23,14 @@ namespace pkengine
             return false;
         }
 
+        // init camera
+        {
+            Camera = new CCamera();
+            Camera->SetPosition(FVector3());
+            Camera->SetScale(50.0f);
+            Camera->SetRotation(FVector3::Up());
+        }
+
         bInit = true;
         return true;
 	}
@@ -37,6 +46,7 @@ namespace pkengine
         bShouldExit = false;
         bInit = false;
         Game = nullptr;
+        Camera = nullptr;
     }
 
 	CPKEngine::~CPKEngine()
@@ -47,6 +57,13 @@ namespace pkengine
         }
 
         CRenderer::Exit();
+
+        if (bInit)
+        {
+            delete Camera;
+        }
+
+        bInit = false;
 	}
 
 	void CPKEngine::RunGame()
@@ -75,7 +92,7 @@ namespace pkengine
 
             Game->Update();
 
-            CRenderer::Update();
+            CRenderer::Update(Camera->GetTransform());
 
             bShouldExit = glfwWindowShouldClose(CRenderer::GetWindow()) ||
                 CInput::GetKeyUp(EKeyCode::KeyCode_ESCAPE);

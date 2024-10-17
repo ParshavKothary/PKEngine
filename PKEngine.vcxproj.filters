@@ -17,6 +17,7 @@
     <ClCompile Include="Src\PongSample\TestBehaviour.cpp" />
     <ClCompile Include="Src\PKEngine\EngineComponents\PKPhysicsComponents.cpp" />
     <ClCompile Include="Src\PKEngine\Systems\PKPhysics.cpp" />
+    <ClCompile Include="Src\PKEngine\EngineComponents\PKCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\External\glad\glad.h" />
@@ -322,6 +323,7 @@
     <ClInclude Include="Src\PongSample\TestBehaviour.h" />
     <ClInclude Include="Src\PKEngine\EngineComponents\PKPhysicsComponents.h" />
     <ClInclude Include="Src\PKEngine\Systems\PKPhysics.h" />
+    <ClInclude Include="Src\PKEngine\EngineComponents\PKCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Src\External\glm\detail\func_common.inl" />

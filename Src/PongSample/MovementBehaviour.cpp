@@ -12,7 +12,7 @@ namespace pkengine
 		RotateCWKey = EKeyCode::KeyCode_E;
 		RotateCCWKey = EKeyCode::KeyCode_Q;
 
-		MoveSpeed = 0.5f;
+		MoveSpeed = 5.0f;
 	}
 
 	void CMovementBehaviour::AddMoveSpeed(int dir)
@@ -49,11 +49,11 @@ namespace pkengine
 	{
 		float Rotation = 0.0f;
 
-		if (CInput::GetKey(EKeyCode::KeyCode_E)) Rotation = -1.0f;
-		else if (CInput::GetKey(EKeyCode::KeyCode_Q)) Rotation = 1.0f;
+		if (CInput::GetKey(RotateCCWKey)) Rotation = 1.0f;
+		else if (CInput::GetKey(RotateCWKey)) Rotation = -1.0f;
 
 		if (Rotation == 0.0f) return;
 
-		Owner->GetTransform()->Rotate(Rotation * CTime::GetDeltaTime() * MoveSpeed * 5.0f, FVector3::Forward());
+		Owner->GetTransform()->Rotate(Rotation * CTime::GetDeltaTime() * MoveSpeed * 0.5f, FVector3::Forward());
 	}
 }

@@ -115,9 +115,6 @@ namespace pkengine
 	// If colliding, sets collision point and normal and returns true
 	bool CollisionTest(CCollider* ColliderA, CCollider* ColliderB, FVector3& point, FVector3& normal)
 	{
-		FOverlap minOverlap;
-		minOverlap.overlap = 9999999.0f;
-
 		// testing against up and right axii of each collider
 		FTestNormal testNormals[] =
 		{
@@ -125,6 +122,8 @@ namespace pkengine
 			FTestNormal(ColliderB->GetOwner()->GetTransform()->GetUp(), false), FTestNormal(ColliderB->GetOwner()->GetTransform()->GetRight(), false)
 		};
 
+		FOverlap minOverlap;
+		bool firstOverlap = true;
 		for (const FTestNormal& testNormal : testNormals)
 		{
 			FOverlap overlap = GetOverlap(ColliderA, ColliderB, testNormal);
@@ -135,8 +134,9 @@ namespace pkengine
 			}
 
 			// keep track of min overlap to get collision point
-			if (overlap.overlap < minOverlap.overlap)
+			if (firstOverlap || overlap.overlap < minOverlap.overlap)
 			{
+				firstOverlap = false;
 				minOverlap = overlap;
 			}
 		}
@@ -148,9 +148,9 @@ namespace pkengine
 			normal = minOverlap.normal;
 			FVector3 start = minOverlap.point.Project(normal); // start is collision point along normal
 
-			// to find how much 'other axis' we need to add to start, find overlap along that axis first and then calculate middle
-			FVector3 otherAxis = normal.Cross(FVector3::Forward());
+			FVector3 otherAxis = normal.Cross(FVector3::Forward()); // other axis is perpendicular to normal
 
+			// to find how much 'other axis' we need to add to start, find overlap along that axis first and then calculate middle
 			float minA, maxA, minB, maxB;
 			FProjResult projResA, projResB;
 			projResA = GetProj(ColliderA, otherAxis, minA, maxA);

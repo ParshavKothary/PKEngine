@@ -19,9 +19,11 @@ namespace pkengine
 
         out vec3 VertColor;
 
+        uniform mat4 CameraTransform;
+
         void main()
         {
-	        gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+	        gl_Position = CameraTransform * vec4(aPos, 1.0);
 	        VertColor = aCol;
         }
     )";
@@ -86,10 +88,10 @@ namespace pkengine
         Instance->RemoveMeshFromBuffer(MeshComponent);
     }
 
-    void CRenderer::Update()
+    void CRenderer::Update(FTransform* CameraTransform)
     {
         assert(bInit());
-        Instance->InternalDraw();
+        Instance->InternalDraw(CameraTransform);
     }
 
     #pragma endregion
@@ -122,7 +124,7 @@ namespace pkengine
         VAO = 0;
         VBO = 0;
 
-        MeshComponents = std::list<CMeshComponent*>();
+        MeshComponents = containers::list<CMeshComponent*>();
 
         // Init Window
         {
@@ -141,6 +143,7 @@ namespace pkengine
             }
 
             glfwMakeContextCurrent(Window);
+            AspectRatio = float(WindowWidth) / float(WindowHeight);
         }
 
         // Init GL Function library
@@ -193,11 +196,12 @@ namespace pkengine
             glDeleteShader(VertexShader);
             glDeleteShader(FragmentShader);
             glUseProgram(ShaderProgram);
+            CameraTransformLocation = glGetUniformLocation(ShaderProgram, "CameraTransform");
         }
 
         // Init Buffer
         {
-            VertexData = std::vector<FVertexData>(BUFFER_VERT_COUNT);
+            VertexData = containers::vector<FVertexData>(BUFFER_VERT_COUNT);
 
             glGenBuffers(1, &VBO);
             glGenVertexArrays(1, &VAO);
@@ -237,11 +241,24 @@ namespace pkengine
         assert(MeshComponents.begin() == MeshComponents.end()); // All Meshes should have unregistered
     }
 
-    void CRenderer::InternalDraw()
+    void CRenderer::InternalDraw(FTransform* CameraTransform)
     {
         for (CMeshComponent* const& MeshComponent : MeshComponents)
         {
             TransformAndCopyMeshVertices(MeshComponent);
+        }
+
+        // set proj matrix
+        {
+            float width = 0.5f;
+            float height = width / AspectRatio;
+
+            FVector3 leftBottom = *CameraTransform * FVector3(-width, -height, 0.0f);
+            FVector3 rightTop = *CameraTransform * FVector3(width, height, 0.0f);
+
+            glm::mat4 proj = glm::ortho(leftBottom.GetX(), rightTop.GetX(), leftBottom.GetY(), rightTop.GetY());
+
+            glUniformMatrix4fv(CameraTransformLocation, 1, GL_FALSE, glm::value_ptr(proj));
         }
 
         glBindVertexArray(VAO);
@@ -276,8 +293,8 @@ namespace pkengine
     {
         MeshComponent->RendererIndex = -1;
         NumActiveVerts -= CMeshComponent::NumVertices;
-        
-        std::list<CMeshComponent*>::iterator CurrMesh = std::find(MeshComponents.begin(), MeshComponents.end(), MeshComponent);
+
+        containers::list<CMeshComponent*>::iterator CurrMesh = std::find(MeshComponents.begin(), MeshComponents.end(), MeshComponent);
         assert(CurrMesh != MeshComponents.end());
         for (++CurrMesh; CurrMesh != MeshComponents.end(); ++CurrMesh)
         {

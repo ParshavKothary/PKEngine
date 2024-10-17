@@ -11,7 +11,7 @@ namespace pkengine
 		if (DebugTransform != nullptr)
 		{
 			DebugTransform->SetPosition(collision.point);
-			DebugTransform2->SetPosition(collision.point + (collision.normal * 0.05f));
+			DebugTransform2->SetPosition(collision.point + (collision.normal * 0.5f));
 			DebugTransform2->SetRotation(collision.normal);
 		}
 	}
