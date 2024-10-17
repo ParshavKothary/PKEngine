@@ -30,9 +30,13 @@ namespace pkengine
 		static inline FVector3 Forward() { return FVector3(0.0f, 0.0f, 1.0f); }
 		static inline FVector3 Backward() { return FVector3(0.0f, 0.0f, -1.0f); }
 
-		inline float GetX() { return glmVector.x; }
-		inline float GetY() { return glmVector.y; }
-		inline float GetZ() { return glmVector.z; }
+		inline float GetX() const { return glmVector.x; }
+		inline float GetY() const { return glmVector.y; }
+		inline float GetZ() const { return glmVector.z; }
+
+		inline void SetX(float v) { glmVector.x = v; }
+		inline void SetY(float v) { glmVector.y = v; }
+		inline void SetZ(float v) { glmVector.z = v; }
 
 		#pragma region Constructors
 
@@ -164,14 +168,19 @@ namespace pkengine
 			glm::normalize(glmVector);
 		}
 
+		inline FVector3 Cross(const FVector3& other)
+		{
+			return FVector3(glm::cross(glmVector, other.glmVector));
+		}
+
 		inline FVector3 Project(const FVector3& axis)
 		{
 			return axis * Dot(axis);
 		}
 
-		inline FVector3 Cross(const FVector3& other)
+		inline FVector3 Reflect(const FVector3& axis)
 		{
-			return FVector3(glm::cross(glmVector, other.glmVector));
+			return *this - (Project(axis) * 2.0f);
 		}
 
 		#pragma endregion

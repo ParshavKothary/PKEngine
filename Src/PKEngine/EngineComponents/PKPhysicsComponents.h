@@ -19,6 +19,8 @@ namespace pkengine
 		virtual bool CheckConstruct() override;
 		virtual void AddHandler(CCollisionHandler* Handler);
 		virtual void OnCollision(const FCollision& collision);
+		virtual void OnCollisionStay(const FCollision& collision);
+		virtual void OnCollisionExit(const FCollision& collision);
 
 		inline FVector3 GetMax() const { return max; }
 		inline FVector3 GetMin() const { return min; }
@@ -42,6 +44,8 @@ namespace pkengine
 		CCollisionHandler(CGameObject* InOwner) : CBehaviour(InOwner) {}
 
 		virtual void OnCollision(const FCollision& collision) {}
+		virtual void OnCollisionStay(const FCollision& collision) {}
+		virtual void OnCollisionExit(const FCollision& collision) {}
 		virtual void Start() override;
 
 	protected:

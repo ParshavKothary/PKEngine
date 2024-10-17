@@ -18,11 +18,26 @@ namespace pkengine
 
 	private:
 
+		enum EColStage
+		{
+			Enter,
+			Stay,
+			Exit
+		};
+
+		struct FColEntry
+		{
+			EColStage stage;
+			FCollision col;
+
+			FColEntry() : stage(EColStage::Enter), col() {}
+		};
+
 		static void AddToCollisionMap(CCollider* key, CCollider* collider, const FVector3& point, const FVector3& normal);
 		static void RemoveFromCollisionMap(CCollider* key, CCollider* collider);
 
 		typedef containers::uset<CCollider*> IColliderList;
-		typedef containers::map<CCollider*, FCollision> ICollidersCollisions;
+		typedef containers::map<CCollider*, FColEntry> ICollidersCollisions;
 		typedef containers::map<CCollider*, ICollidersCollisions> ICollisionMap;
 
 		static unsigned int NumColliders;

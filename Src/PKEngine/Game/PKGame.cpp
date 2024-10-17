@@ -43,7 +43,7 @@ namespace pkengine
 	void CGame::RegisterGameObject(CGameObject* GameObject, const char* InName)
 	{
 		GameObject->SetName(GetAvailableGameObjectName(InName));
-		GameObject->Setup();
 		GameObjects.push_back(GameObject);
+		GameObject->Setup();
 	}
 }

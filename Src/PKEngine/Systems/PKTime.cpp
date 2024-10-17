@@ -27,5 +27,14 @@ namespace pkengine
 		DeltaTime = DurationDoubleMicro(Now - CachedTimePoint) * MicroToSeconds;
 		CurrentGameTime = DurationDoubleMicro(Now - GameStartTimePoint) * MicroToSeconds;
 		CachedTimePoint = Now;
+
+#ifdef _DEBUG
+		if (DeltaTime > 1.0f) // probably debugging
+		{
+			float correction = DeltaTime - 0.016f;
+			DeltaTime -= correction;
+			CurrentGameTime -= correction;
+		}
+#endif
 	}
 }

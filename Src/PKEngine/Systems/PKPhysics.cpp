@@ -227,12 +227,33 @@ namespace pkengine
 		{
 			CCollider* Collider = iter->first;
 			ICollidersCollisions& collisions = iter->second;
-			for (ICollidersCollisions::iterator iter2 = collisions.begin(); iter2 != collisions.end(); ++iter2)
+			for (ICollidersCollisions::iterator iter2 = collisions.begin(); iter2 != collisions.end();)
 			{
-				Collider->OnCollision(iter2->second);
+				switch (iter2->second.stage)
+				{
+				case EColStage::Enter:
+					Collider->OnCollision(iter2->second.col);
+					++iter2;
+					break;
+				case EColStage::Stay:
+					Collider->OnCollisionStay(iter2->second.col);
+					++iter2;
+					break;
+				case EColStage::Exit:
+					Collider->OnCollisionExit(iter2->second.col);
+					iter2 = collisions.erase(iter2);
+					break;
+				}
 			}
 
-			++iter;
+			if (collisions.empty())
+			{
+				iter = CollisionMap.erase(iter);
+			}
+			else
+			{
+				++iter;
+			}
 		}
 	}
 
@@ -267,7 +288,9 @@ namespace pkengine
 			CollisionMap.emplace(key, ICollidersCollisions());
 		}
 
-		CollisionMap[key][collider] = FCollision(collider, point, normal);
+		EColStage stage = CollisionMap[key].find(collider) == CollisionMap[key].end() ? EColStage::Enter : EColStage::Stay;
+		CollisionMap[key][collider].col = FCollision(collider, point, normal);
+		CollisionMap[key][collider].stage = stage;
 	}
 
 	void CPhysics::RemoveFromCollisionMap(CCollider* key, CCollider* collider)
@@ -285,10 +308,7 @@ namespace pkengine
 			return;
 		}
 
-		collisions.erase(iter);
-		if (collisions.empty())
-		{
-			CollisionMap.erase(collisionsEntry);
-		}
+		// probably should be getting point and normal here
+		collisions[collider].stage = EColStage::Exit;
 	}
 }

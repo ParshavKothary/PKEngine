@@ -30,7 +30,7 @@ namespace pkengine
 
 		CMeshComponent* AddMeshComponent(EMeshType MeshType, const FVector3& Color);
 
-		CCollider* AddCollider(const FVector3& size, const FVector3& offset);
+		CCollider* AddCollider(const FVector3& size = FVector3(1.0f, 1.0f), const FVector3& offset = FVector3());
 
 		template<typename T>
 		T* AddBehaviour();

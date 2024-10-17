@@ -6,7 +6,7 @@ using namespace pkengine;
 int main()
 {
     CPKEngine Engine;
-    Engine.CreateGame<CPongGame>(1200, 800, "TestGame");
+    Engine.CreateGame<ponggame::CPongGame>(1200, 800, "TestGame");
     Engine.RunGame();
 
 	return 0;

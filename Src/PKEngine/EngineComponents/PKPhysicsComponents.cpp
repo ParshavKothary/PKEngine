@@ -37,6 +37,22 @@ namespace pkengine
 		}
 	}
 
+	void CCollider::OnCollisionStay(const FCollision& collision)
+	{
+		for (CCollisionHandler* Handler : CollisionHandlers)
+		{
+			Handler->OnCollisionStay(collision);
+		}
+	}
+
+	void CCollider::OnCollisionExit(const FCollision& collision)
+	{
+		for (CCollisionHandler* Handler : CollisionHandlers)
+		{
+			Handler->OnCollisionExit(collision);
+		}
+	}
+
 	void CCollider::UpdatePoints()
 	{
 		FTransform& xform = *(GetOwner()->GetTransform());

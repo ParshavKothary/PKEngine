@@ -4,45 +4,67 @@
 #include <Core/PKEngine.h>
 #include <Core/PKCommon.h>
 
+#include <Objects/Ball.h>
+#include <Objects/Paddle.h>
+#include <Objects/Wall.h>
+
 namespace pkengine
 {
-	void CPongGame::Setup()
-	{
-        CGameObject* NewGameObj;
+    namespace ponggame
+    {
+        void CPongGame::Setup()
+        {
+            CreateGameObject<CBall>("Ball");
 
-        NewGameObj = CreateGameObject<CGameObject>("TestTriangle");
-        CMeshComponent* mesh = NewGameObj->AddMeshComponent(EMeshType::Quad, FVector3(0.7f, 0.1f, 0.1f));
-        NewGameObj->GetTransform()->SetScale(FVector3(2.0f, 4.0f, 1.0f));
-        NewGameObj->AddBehaviour<CMovementBehaviour>();
-        CTestBehaviour* testB = NewGameObj->AddBehaviour<CTestBehaviour>();
-        NewGameObj->AddCollider(FVector3::One(), FVector3());
+            {
+                CPaddle* Paddle = CreateGameObject<CPaddle>("Paddle");
+                Paddle->GetTransform()->SetPosition(FVector3::Right() * 22.0f);
+                Paddle->SetKeys(EKeyCode::KeyCode_UP, EKeyCode::KeyCode_DOWN);
+            }
 
-        NewGameObj = CreateGameObject<CGameObject>("TestTriangle2");
-        NewGameObj->GetTransform()->SetScale(FVector3(2.0f, 2.0f, 1.0f));
-        NewGameObj->GetTransform()->SetPosition(FVector3(2.0f, 5.0f, 0.0f));
-        NewGameObj->AddMeshComponent(EMeshType::Quad, FVector3(0.1f, 0.1f, 0.7f));
-        NewGameObj->AddCollider(FVector3::One(), FVector3());
+            {
+                CPaddle* Paddle = CreateGameObject<CPaddle>("Paddle");
+                Paddle->GetTransform()->SetPosition(FVector3::Right() * -22.0f);
+            }
 
-        CGameObject* DebugObj = CreateGameObject<CGameObject>("DebugObj");
-        DebugObj->AddMeshComponent(EMeshType::Quad, FVector3(1.0f, 1.0f, 1.0f));
-        DebugObj->GetTransform()->SetScale(FVector3(0.2f, 0.2f, 1.0f));
+            {
+                CWall* Wall = CreateGameObject<CWall>("Wall");
+                Wall->GetTransform()->SetScale(FVector3(2.0f, 40.0f));
+                Wall->GetTransform()->SetPosition(FVector3::Right() * -24.0f);
+            }
 
-        CGameObject* DebugObj2 = CreateGameObject<CGameObject>("DebugObj2");
-        DebugObj2->AddMeshComponent(EMeshType::Quad, FVector3(1.0f, 1.0f, 1.0f));
-        DebugObj2->GetTransform()->SetScale(FVector3(0.1f, 1.0f, 1.0f));
+            {
+                CWall* Wall = CreateGameObject<CWall>("Wall");
+                Wall->GetTransform()->SetScale(FVector3(2.0f, 40.0f));
+                Wall->GetTransform()->SetPosition(FVector3::Right() * 24.0f);
+            }
 
-        testB->DebugTransform = DebugObj->GetTransform();
-        testB->DebugTransform2 = DebugObj2->GetTransform();
-        testB->DebugMesh = mesh;
+            {
+                CWall* Wall = CreateGameObject<CWall>("Wall");
+                Wall->GetTransform()->SetScale(FVector3(60.0f, 2.0f));
+                Wall->GetTransform()->SetPosition(FVector3::Up() * -16.0f);
+            }
 
+            {
+                CWall* Wall = CreateGameObject<CWall>("Wall");
+                Wall->GetTransform()->SetScale(FVector3(60.0f, 2.0f));
+                Wall->GetTransform()->SetPosition(FVector3::Up() * 16.0f);
+            }
+        }
 
-        NewGameObj = CreateGameObject<CGameObject>("TestTriangle3");
-        NewGameObj->AddMeshComponent(EMeshType::Quad, FVector3(0.4f, 0.0f, 0.0f));
-        NewGameObj->GetTransform()->SetPosition(FVector3(3.0f, 3.0f));
+        void CPongGame::OnP1Score()
+        {
+            ++p1Score;
 
+            if (p1Score >= PONG_MAX_SCORE)
+            {
 
-        NewGameObj = CreateGameObject<CGameObject>("TestTriangle3");
-        NewGameObj->AddMeshComponent(EMeshType::Quad, FVector3(0.0f, 0.4f, 0.0f));
-        NewGameObj->GetTransform()->SetPosition(FVector3(-3.0f, -3.0f));
-	}
+            }
+        }
+
+        void CPongGame::OnP2Score()
+        {
+
+        }
+    }
 }
