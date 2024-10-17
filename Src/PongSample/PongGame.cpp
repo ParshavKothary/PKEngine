@@ -1,6 +1,4 @@
 #include <PongGame.h>
-#include <MovementBehaviour.h>
-#include <TestBehaviour.h>
 #include <Core/PKEngine.h>
 #include <Core/PKCommon.h>
 
