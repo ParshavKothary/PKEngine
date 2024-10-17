@@ -8,7 +8,7 @@ namespace pkengine
 		{
 			CGameObject::Setup();
 
-			AddMeshComponent(EMeshType::Quad, FVector3(0.1f, 0.1f, 0.1f));
+			AddMeshComponent(EMeshType::Quad, FVector3(0.3f, 0.3f, 0.3f));
 			AddCollider();
 		}
 	}

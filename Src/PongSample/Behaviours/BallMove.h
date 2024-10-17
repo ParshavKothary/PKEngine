@@ -11,18 +11,26 @@ namespace pkengine
 	{
 		class CBallMove : public CCollisionHandler
 		{
+
+		protected:
+
+			bool IsGrabbed;
+			FVector3 moveDir;
+
 		public:
 			CBallMove(CGameObject* InOwner) :
-				CCollisionHandler(InOwner)
+				CCollisionHandler(InOwner),
+				IsGrabbed(true)
 			{}
 
 			virtual void OnCollision(const FCollision& collision) override;
 			virtual void Update() override;
 			virtual void Start() override;
 
-		protected:
-			
-			FVector3 moveDir;
+			inline void SetIsGrabbed(bool bGrabbed) { IsGrabbed = bGrabbed; }
+			inline void SetMoveDir(const FVector3& dir) { moveDir = dir; }
+
+			void TakePlayerUpVel(float dir);
 		};
 	}
 }

@@ -9,14 +9,22 @@ namespace pkengine
 {
 	namespace ponggame
 	{
+		class CBallMove;
+
 		class CPaddle : public CGameObject
 		{
 
 		protected:
 			EKeyCode upKey;
 			EKeyCode downKey;
+			EKeyCode shootKey;
+			FVector3 shootDir;
 
 			float upDir;
+			CBallMove* Ball;
+
+			void UpdateMove();
+			void UpdateShoot();
 
 		public:
 			CPaddle(CGame* GameContext):
@@ -24,19 +32,20 @@ namespace pkengine
 			{
 				upKey = EKeyCode::KeyCode_W;
 				downKey = EKeyCode::KeyCode_S;
+				shootKey = EKeyCode::KeyCode_D;
 				upDir = 0.0f;
+				shootDir = FVector3::Right();
+				Ball = nullptr;
 			}
 
 			virtual void Setup() override;
 			virtual void Update() override;
 
-			void SetKeys(EKeyCode up, EKeyCode down)
-			{
-				upKey = up;
-				downKey = down;
-			}
-
 			inline float GetUpDir() const { return upDir; }
+
+			void SetPlayer(unsigned int player);
+			void GiveBall(CBallMove* inBall);
+			void ShootBall();
 		};
 	}
 }

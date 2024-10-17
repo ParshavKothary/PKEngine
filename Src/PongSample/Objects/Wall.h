@@ -22,6 +22,9 @@ namespace pkengine
 			{}
 
 			virtual void Setup() override;
+
+			inline int GetPlayerWall() { return playerWall; }
+			inline void SetPlayerWall(int inPlayerWall) { playerWall = inPlayerWall; }
 		};
 	}
 }

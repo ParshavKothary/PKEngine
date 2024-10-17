@@ -257,7 +257,6 @@ namespace pkengine
             FVector3 rightTop = *CameraTransform * FVector3(width, height, 0.0f);
 
             glm::mat4 proj = glm::ortho(leftBottom.GetX(), rightTop.GetX(), leftBottom.GetY(), rightTop.GetY());
-
             glUniformMatrix4fv(CameraTransformLocation, 1, GL_FALSE, glm::value_ptr(proj));
         }
 
@@ -266,7 +265,7 @@ namespace pkengine
         glBufferData(GL_ARRAY_BUFFER, sizeof(FVertexData) * VertexData.size(), VertexData.data(), GL_DYNAMIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         glDrawArrays(GL_TRIANGLES, 0, NumActiveVerts);
 

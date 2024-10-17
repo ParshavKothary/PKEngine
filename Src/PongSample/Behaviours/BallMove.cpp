@@ -4,22 +4,31 @@
 #include <Objects/Wall.h>
 #include <Systems/PKTime.h>
 
+#include <PongGame.h>
+
 namespace pkengine
 {
 	namespace ponggame
 	{
+		void CBallMove::TakePlayerUpVel(float dir)
+		{
+			if (dir == 0.0f) return;
+
+			moveDir += dir * FVector3::Up() * 0.3f;
+			if (abs(moveDir.GetY()) > 0.6f)
+			{
+				moveDir.SetY(moveDir.GetY() > 0.0f ? 0.6f : -0.6f);
+			}
+			moveDir.Normalize();
+		}
+
 		void CBallMove::OnCollision(const FCollision& collision)
 		{
 			CPaddle* paddle = dynamic_cast<CPaddle*>(collision.collider->GetOwner());
 			if (paddle != nullptr)
 			{
 				moveDir = moveDir.Reflect(collision.normal);
-				moveDir += paddle->GetUpDir() * FVector3::Up() * 0.3f;
-				if (abs(moveDir.GetY()) > 0.6f)
-				{
-					moveDir.SetY(moveDir.GetY() > 0.0f ? 0.6f : -0.6f);
-				}
-				moveDir.Normalize();
+				TakePlayerUpVel(paddle->GetUpDir());
 
 				return;
 			}
@@ -27,13 +36,26 @@ namespace pkengine
 			CWall* wall = dynamic_cast<CWall*>(collision.collider->GetOwner());
 			if (wall != nullptr)
 			{
-				moveDir = moveDir.Reflect(collision.normal);
+				if (wall->GetPlayerWall() == -1)
+				{
+					moveDir = moveDir.Reflect(collision.normal);
+				}
+				else
+				{
+					CPongGame* PongGame = dynamic_cast<CPongGame*>(this->GetOwner()->GetGame());
+					PongGame->OnHitPlayerWall(wall->GetPlayerWall());
+				}
 			}
 		}
 
 		void CBallMove::Update()
 		{
 			CCollisionHandler::Update();
+
+			if (IsGrabbed)
+			{
+				return;
+			}
 
 			FTransform* xform = GetOwner()->GetTransform();
 			xform->SetPosition(xform->GetPosition() + moveDir * 25.0f * CTime::GetDeltaTime());
