@@ -24,27 +24,20 @@ namespace pkengine
 
 		void CBallMove::OnCollision(const FCollision& collision)
 		{
+			moveDir = moveDir.Reflect(collision.normal);
+
 			CPaddle* paddle = dynamic_cast<CPaddle*>(collision.collider->GetOwner());
 			if (paddle != nullptr)
 			{
-				moveDir = moveDir.Reflect(collision.normal);
 				TakePlayerUpVel(paddle->GetUpDir());
-
 				return;
 			}
 
 			CWall* wall = dynamic_cast<CWall*>(collision.collider->GetOwner());
 			if (wall != nullptr)
 			{
-				if (wall->GetPlayerWall() == -1)
-				{
-					moveDir = moveDir.Reflect(collision.normal);
-				}
-				else
-				{
-					CPongGame* PongGame = dynamic_cast<CPongGame*>(this->GetOwner()->GetGame());
-					PongGame->OnHitPlayerWall(wall->GetPlayerWall());
-				}
+				CPongGame* PongGame = this->GetOwner()->GetGame<CPongGame>();
+				PongGame->OnHitWall(wall->GetPlayerWall());
 			}
 		}
 

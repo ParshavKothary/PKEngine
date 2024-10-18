@@ -21,6 +21,40 @@
   <ItemGroup>
     <ClCompile Include="Src\External\glad\glad.c" />
     <ClCompile Include="Src\External\glm\detail\glm.cpp" />
+    <ClCompile Include="Src\External\soloud\audiosource\wav\dr_impl.cpp" />
+    <ClCompile Include="Src\External\soloud\audiosource\wav\soloud_wav.cpp" />
+    <ClCompile Include="Src\External\soloud\audiosource\wav\soloud_wavstream.cpp" />
+    <ClCompile Include="Src\External\soloud\audiosource\wav\stb_vorbis.c" />
+    <ClCompile Include="Src\External\soloud\backend\miniaudio\soloud_miniaudio.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_audiosource.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_bus.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_core_3d.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_core_basicops.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_core_faderops.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_core_filterops.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_core_getters.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_core_setters.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_core_voicegroup.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_core_voiceops.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_fader.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_fft.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_fft_lut.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_file.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_filter.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_misc.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_queue.cpp" />
+    <ClCompile Include="Src\External\soloud\core\soloud_thread.cpp" />
+    <ClCompile Include="Src\External\soloud\filter\soloud_bassboostfilter.cpp" />
+    <ClCompile Include="Src\External\soloud\filter\soloud_biquadresonantfilter.cpp" />
+    <ClCompile Include="Src\External\soloud\filter\soloud_dcremovalfilter.cpp" />
+    <ClCompile Include="Src\External\soloud\filter\soloud_echofilter.cpp" />
+    <ClCompile Include="Src\External\soloud\filter\soloud_fftfilter.cpp" />
+    <ClCompile Include="Src\External\soloud\filter\soloud_flangerfilter.cpp" />
+    <ClCompile Include="Src\External\soloud\filter\soloud_freeverbfilter.cpp" />
+    <ClCompile Include="Src\External\soloud\filter\soloud_lofifilter.cpp" />
+    <ClCompile Include="Src\External\soloud\filter\soloud_robotizefilter.cpp" />
+    <ClCompile Include="Src\External\soloud\filter\soloud_waveshaperfilter.cpp" />
     <ClCompile Include="Src\Main.cpp" />
     <ClCompile Include="Src\PKEngine\Core\PKEngine.cpp" />
     <ClCompile Include="Src\PKEngine\EngineComponents\PKCamera.cpp" />
@@ -32,6 +66,7 @@
     <ClCompile Include="Src\PKEngine\Systems\PKInput.cpp" />
     <ClCompile Include="Src\PKEngine\Systems\PKPhysics.cpp" />
     <ClCompile Include="Src\PKEngine\Systems\PKRendering.cpp" />
+    <ClCompile Include="Src\PKEngine\Systems\PKSound.cpp" />
     <ClCompile Include="Src\PKEngine\Systems\PKTime.cpp" />
     <ClCompile Include="Src\PongSample\Behaviours\BallMove.cpp" />
     <ClCompile Include="Src\PongSample\Objects\Ball.cpp" />
@@ -326,6 +361,46 @@
     <ClInclude Include="Src\External\glm\vec4.hpp" />
     <ClInclude Include="Src\External\glm\vector_relational.hpp" />
     <ClInclude Include="Src\External\KHR\khrplatform.h" />
+    <ClInclude Include="Src\External\soloud\audiosource\wav\dr_flac.h" />
+    <ClInclude Include="Src\External\soloud\audiosource\wav\dr_mp3.h" />
+    <ClInclude Include="Src\External\soloud\audiosource\wav\dr_wav.h" />
+    <ClInclude Include="Src\External\soloud\audiosource\wav\stb_vorbis.h" />
+    <ClInclude Include="Src\External\soloud\backend\miniaudio\miniaudio.h" />
+    <ClInclude Include="Src\External\soloud\soloud.h" />
+    <ClInclude Include="Src\External\soloud\soloud_audiosource.h" />
+    <ClInclude Include="Src\External\soloud\soloud_bassboostfilter.h" />
+    <ClInclude Include="Src\External\soloud\soloud_biquadresonantfilter.h" />
+    <ClInclude Include="Src\External\soloud\soloud_bus.h" />
+    <ClInclude Include="Src\External\soloud\soloud_c.h" />
+    <ClInclude Include="Src\External\soloud\soloud_dcremovalfilter.h" />
+    <ClInclude Include="Src\External\soloud\soloud_echofilter.h" />
+    <ClInclude Include="Src\External\soloud\soloud_error.h" />
+    <ClInclude Include="Src\External\soloud\soloud_fader.h" />
+    <ClInclude Include="Src\External\soloud\soloud_fft.h" />
+    <ClInclude Include="Src\External\soloud\soloud_fftfilter.h" />
+    <ClInclude Include="Src\External\soloud\soloud_file.h" />
+    <ClInclude Include="Src\External\soloud\soloud_file_hack_off.h" />
+    <ClInclude Include="Src\External\soloud\soloud_file_hack_on.h" />
+    <ClInclude Include="Src\External\soloud\soloud_filter.h" />
+    <ClInclude Include="Src\External\soloud\soloud_flangerfilter.h" />
+    <ClInclude Include="Src\External\soloud\soloud_freeverbfilter.h" />
+    <ClInclude Include="Src\External\soloud\soloud_internal.h" />
+    <ClInclude Include="Src\External\soloud\soloud_lofifilter.h" />
+    <ClInclude Include="Src\External\soloud\soloud_misc.h" />
+    <ClInclude Include="Src\External\soloud\soloud_monotone.h" />
+    <ClInclude Include="Src\External\soloud\soloud_noise.h" />
+    <ClInclude Include="Src\External\soloud\soloud_openmpt.h" />
+    <ClInclude Include="Src\External\soloud\soloud_queue.h" />
+    <ClInclude Include="Src\External\soloud\soloud_robotizefilter.h" />
+    <ClInclude Include="Src\External\soloud\soloud_sfxr.h" />
+    <ClInclude Include="Src\External\soloud\soloud_speech.h" />
+    <ClInclude Include="Src\External\soloud\soloud_tedsid.h" />
+    <ClInclude Include="Src\External\soloud\soloud_thread.h" />
+    <ClInclude Include="Src\External\soloud\soloud_vic.h" />
+    <ClInclude Include="Src\External\soloud\soloud_vizsn.h" />
+    <ClInclude Include="Src\External\soloud\soloud_wav.h" />
+    <ClInclude Include="Src\External\soloud\soloud_waveshaperfilter.h" />
+    <ClInclude Include="Src\External\soloud\soloud_wavstream.h" />
     <ClInclude Include="Src\PKEngine\Core\PKBase.h" />
     <ClInclude Include="Src\PKEngine\Core\PKCommon.h" />
     <ClInclude Include="Src\PKEngine\Core\PKEngine.h" />
@@ -340,6 +415,7 @@
     <ClInclude Include="Src\PKEngine\Systems\PKInput.h" />
     <ClInclude Include="Src\PKEngine\Systems\PKPhysics.h" />
     <ClInclude Include="Src\PKEngine\Systems\PKRendering.h" />
+    <ClInclude Include="Src\PKEngine\Systems\PKSound.h" />
     <ClInclude Include="Src\PKEngine\Systems\PKTime.h" />
     <ClInclude Include="Src\PongSample\Behaviours\BallMove.h" />
     <ClInclude Include="Src\PongSample\Objects\Ball.h" />
@@ -545,7 +621,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>.\Src\PongSample;.\Src\External;.\Src\PKEngine;$(IncludePath)</IncludePath>
+    <IncludePath>.\Src\PongSample;.\Src\External;.\Src\External\soloud;.\Src\PKEngine;$(IncludePath)</IncludePath>
     <LibraryPath>.\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -585,7 +661,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;WITH_MINIAUDIO;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp17</LanguageStandard>

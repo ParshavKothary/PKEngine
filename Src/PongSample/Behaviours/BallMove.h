@@ -11,7 +11,6 @@ namespace pkengine
 	{
 		class CBallMove : public CCollisionHandler
 		{
-
 		protected:
 
 			bool IsGrabbed;

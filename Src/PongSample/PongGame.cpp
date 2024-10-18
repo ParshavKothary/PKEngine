@@ -2,6 +2,7 @@
 #include <Core/PKEngine.h>
 #include <Core/PKCommon.h>
 #include <EngineComponents/PKMeshComponent.h>
+#include <Systems/PKSound.h>
 
 #include <Behaviours/BallMove.h>
 #include <Objects/Ball.h>
@@ -50,6 +51,8 @@ namespace pkengine
             }
 
             GivePlayerBall(0);
+
+            clickSound = CAudioPlayer::Load("Assets/Sounds/click.wav");
         }
 
         void CPongGame::Reset()
@@ -82,8 +85,14 @@ namespace pkengine
             pPaddles[player]->GiveBall(pBall);
         }
 
-        void CPongGame::OnHitPlayerWall(unsigned int player)
+        void CPongGame::OnHitWall(int player)
         {
+            if (player < 0)
+            {
+                CAudioPlayer::Play(clickSound);
+                return;
+            }
+
             assert(player == 0 || player == 1);
             IncrementScore(1 - player);
             GivePlayerBall(player);

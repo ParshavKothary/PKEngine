@@ -6,6 +6,7 @@
 #include <Systems/PKInput.h>
 #include <Systems/PKPhysics.h>
 #include <Systems/PKRendering.h>
+#include <Systems/PKSound.h>
 #include <Systems/PKTime.h>
 
 namespace pkengine
@@ -25,6 +26,7 @@ namespace pkengine
 
         CTime::Init();
         CPhysics::Init();
+        CAudioPlayer::Init();
 
         // init camera
         {
@@ -63,6 +65,7 @@ namespace pkengine
         CInput::CleanUp();
         CTime::Cleanup();
         CRenderer::Exit();
+        CAudioPlayer::CleanUp();
 
 
         if (bInit)

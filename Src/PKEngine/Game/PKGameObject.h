@@ -22,6 +22,9 @@ namespace pkengine
 		
 		inline CGame* GetGame() const { return Game; }
 
+		template<typename T>
+		inline T* GetGame() const { return dynamic_cast<T*>(Game); }
+
 		inline FTransform* GetTransform() const { return Transform; }
 
 		inline CMeshComponent* GetMeshComponent() const { return MeshComponent; }

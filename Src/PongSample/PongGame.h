@@ -5,6 +5,7 @@
 
 namespace pkengine
 {
+	class CAudioClip;
 	class CGameObject;
 	class CMeshComponent;
 	class CPKEngine;
@@ -21,14 +22,15 @@ namespace pkengine
 		public:
 			CPongGame(CPKEngine* EngineContext) :
 				CGame(EngineContext),
-				pBall(nullptr)
+				pBall(nullptr),
+				clickSound(nullptr)
 			{
 				memset(scoreIcons[0], 0, sizeof(void*) * PONG_MAX_SCORE);
 				memset(scoreIcons[1], 0, sizeof(void*) * PONG_MAX_SCORE);
 				memset(scores, 0, sizeof(unsigned int) * 2);
 			}
 
-			void OnHitPlayerWall(unsigned int player);
+			void OnHitWall(int player);
 
 		protected:
 
@@ -37,6 +39,8 @@ namespace pkengine
 
 			unsigned int scores[2];
 			CMeshComponent* scoreIcons[2][PONG_MAX_SCORE];
+
+			const CAudioClip* clickSound;
 
 			void Setup() override;
 			void Reset();
