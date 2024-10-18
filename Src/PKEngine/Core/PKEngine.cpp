@@ -23,6 +23,9 @@ namespace pkengine
             return false;
         }
 
+        CTime::Init();
+        CPhysics::Init();
+
         // init camera
         {
             Camera = new CCamera();
@@ -56,7 +59,11 @@ namespace pkengine
             delete Game;
         }
 
+        CPhysics::CleanUp();
+        CInput::CleanUp();
+        CTime::Cleanup();
         CRenderer::Exit();
+
 
         if (bInit)
         {
@@ -100,5 +107,6 @@ namespace pkengine
             CInput::FlushInput(CRenderer::GetWindow());
             CTime::Update();
         }
+
 	}
 }

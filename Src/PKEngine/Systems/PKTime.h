@@ -7,21 +7,30 @@ namespace pkengine
 {
 	class CTime
 	{
+	private:
 		typedef std::chrono::time_point<std::chrono::high_resolution_clock> CTimePoint;
 
-	public:
-		inline static float GetDeltaTime() { return DeltaTime; }
-		inline static float GetCurrentTime() { return CurrentGameTime; }
+		float DeltaTime;
+		float CurrentGameTime;
 
+		CTimePoint CachedTimePoint;
+
+		static CTime* Instance;
+
+		CTime() :
+			DeltaTime(0.0f),
+			CurrentGameTime(0.0f)
+		{}
+
+	public:
+
+		inline static float GetDeltaTime() { return Instance->DeltaTime; }
+		inline static float GetCurrentTime() { return Instance->CurrentGameTime; }
+
+		static void Init();
+		static void Cleanup();
 		static void Start();
 		static void Update();
-
-	private:
-		static float DeltaTime;
-		static float CurrentGameTime;
-
-		static CTimePoint GameStartTimePoint;
-		static CTimePoint CachedTimePoint;
 	};
 }
 

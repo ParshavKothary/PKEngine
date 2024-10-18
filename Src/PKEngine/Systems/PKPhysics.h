@@ -11,8 +11,9 @@ namespace pkengine
 	{
 	public:
 
+		static void Init();
+		static void CleanUp();
 		static void Update();
-		static void PostUpdate();
 		static bool RegisterCollider(CCollider* Collider);
 		static void UnregisterCollider(CCollider* Collider);
 
@@ -33,16 +34,26 @@ namespace pkengine
 			FColEntry() : stage(EColStage::Enter), col() {}
 		};
 
-		static void AddToCollisionMap(CCollider* key, CCollider* collider, const FVector3& point, const FVector3& normal);
-		static void RemoveFromCollisionMap(CCollider* key, CCollider* collider);
-
 		typedef containers::uset<CCollider*> IColliderList;
 		typedef containers::map<CCollider*, FColEntry> ICollidersCollisions;
 		typedef containers::map<CCollider*, ICollidersCollisions> ICollisionMap;
 
-		static unsigned int NumColliders;
-		static IColliderList Colliders;
-		static ICollisionMap CollisionMap;
+		void AddToCollisionMap(CCollider* key, CCollider* collider, const FVector3& point, const FVector3& normal);
+		void RemoveFromCollisionMap(CCollider* key, CCollider* collider);
+
+		void UpdateInternal();
+		bool RegisterColliderInternal(CCollider* Collider);
+		void UnregisterColliderInternal(CCollider* Collider);
+
+		CPhysics() :
+			NumColliders(0)
+		{}
+
+		static CPhysics* Instance;
+
+		unsigned int NumColliders;
+		IColliderList Colliders;
+		ICollisionMap CollisionMap;
 	};
 }
 

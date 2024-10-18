@@ -8,21 +8,25 @@ namespace pkengine
 	class CInput
 	{
 	public:
-		static bool GetKeyDown(EKeyCode KeyCode) { return DownKeys.find(KeyCode) != DownKeys.end(); }
-		static bool GetKeyUp(EKeyCode KeyCode) { return UpKeys.find(KeyCode) != UpKeys.end(); }
-		static bool GetKey(EKeyCode KeyCode) { return HeldKeys.find(KeyCode) != HeldKeys.end(); }
+		static bool GetKeyDown(EKeyCode KeyCode) { return Instance->DownKeys.find(KeyCode) != Instance->DownKeys.end(); }
+		static bool GetKeyUp(EKeyCode KeyCode) { return Instance->UpKeys.find(KeyCode) != Instance->UpKeys.end(); }
+		static bool GetKey(EKeyCode KeyCode) { return Instance->HeldKeys.find(KeyCode) != Instance->HeldKeys.end(); }
 
 		static bool Init(GLFWwindow* Window);
+		static void CleanUp();
 		static void Update();
 		static void FlushInput(GLFWwindow* Window);
 
 	private:
-		static void GLKeyCallback(GLFWwindow* Window, int GLFWKey, int ScanCode, int GLFWAction, int Mods);
-
 		typedef containers::uset<EKeyCode> IKeySet;
-		static IKeySet DownKeys;
-		static IKeySet HeldKeys;
-		static IKeySet UpKeys;
+
+		static void GLKeyCallback(GLFWwindow* Window, int GLFWKey, int ScanCode, int GLFWAction, int Mods);
+		
+		static CInput* Instance;
+
+		IKeySet DownKeys;
+		IKeySet HeldKeys;
+		IKeySet UpKeys;
 	};
 }
 

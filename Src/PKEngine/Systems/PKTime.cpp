@@ -5,35 +5,39 @@ namespace pkengine
 	#define DurationDoubleMicro(a) (std::chrono::duration<double, std::micro>(a).count())
 	#define MicroToSeconds (1.0/1000000)
 
-	float CTime::DeltaTime = 0.0f;
-	float CTime::CurrentGameTime = 0.0f;
+	CTime* CTime::Instance = nullptr;
 
-	CTime::CTimePoint CTime::GameStartTimePoint;
-	CTime::CTimePoint CTime::CachedTimePoint;
+	void CTime::Init()
+	{
+		Instance = new CTime();
+	}
+
+	void CTime::Cleanup()
+	{
+		delete Instance;
+	}
 
 	void CTime::Start()
 	{
 		CTimePoint Now = std::chrono::high_resolution_clock::now();
-		CachedTimePoint = Now;
-		GameStartTimePoint = Now;
+		Instance->CachedTimePoint = Now;
 
-		DeltaTime = 0.0f;
-		CurrentGameTime = 0.0f;
+		Instance->DeltaTime = 0.0f;
+		Instance->CurrentGameTime = 0.0f;
 	}
 
 	void CTime::Update()
 	{
 		CTimePoint Now = std::chrono::high_resolution_clock::now();
-		DeltaTime = DurationDoubleMicro(Now - CachedTimePoint) * MicroToSeconds;
-		CurrentGameTime = DurationDoubleMicro(Now - GameStartTimePoint) * MicroToSeconds;
-		CachedTimePoint = Now;
+		Instance->DeltaTime = DurationDoubleMicro(Now - Instance->CachedTimePoint) * MicroToSeconds;
+		Instance->CurrentGameTime += Instance->DeltaTime;
+		Instance->CachedTimePoint = Now;
 
 #ifdef _DEBUG
-		if (DeltaTime > 1.0f) // probably debugging
+		if (Instance->DeltaTime > 1.0f) // probably debugging
 		{
-			float correction = DeltaTime - 0.016f;
-			DeltaTime -= correction;
-			CurrentGameTime -= correction;
+			float correction = Instance->DeltaTime - 0.016f;
+			Instance->DeltaTime -= correction;
 		}
 #endif
 	}

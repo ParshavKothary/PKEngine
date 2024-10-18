@@ -231,6 +231,7 @@ namespace pkengine
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
         glDeleteProgram(ShaderProgram);
+        glfwDestroyWindow(Window);
         glfwTerminate();
 
         Window = nullptr;

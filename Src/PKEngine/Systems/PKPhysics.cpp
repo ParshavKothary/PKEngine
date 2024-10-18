@@ -7,9 +7,7 @@ namespace pkengine
 {
 #define MAX_COLLIDERS 100
 
-	CPhysics::IColliderList CPhysics::Colliders = CPhysics::IColliderList();
-	CPhysics::ICollisionMap CPhysics::CollisionMap = CPhysics::ICollisionMap();
-	unsigned int CPhysics::NumColliders = 0;
+	CPhysics* CPhysics::Instance = nullptr;
 
 	struct FTestNormal
 	{
@@ -181,9 +179,9 @@ namespace pkengine
 		return true;
 	}
 
-	void CPhysics::Update()
+	void CPhysics::UpdateInternal()
 	{
-		for (CCollider* Collider: Colliders)
+		for (CCollider* Collider : Colliders)
 		{
 			Collider->UpdatePoints();
 		}
@@ -257,12 +255,22 @@ namespace pkengine
 		}
 	}
 
-	void CPhysics::PostUpdate()
+	void CPhysics::Update()
 	{
-		CollisionMap.clear();
+		Instance->UpdateInternal();
 	}
 
-	bool CPhysics::RegisterCollider(CCollider* Collider)
+	void CPhysics::Init()
+	{
+		Instance = new CPhysics();
+	}
+
+	void CPhysics::CleanUp()
+	{
+		delete Instance;
+	}
+
+	bool CPhysics::RegisterColliderInternal(CCollider* Collider)
 	{
 		if (NumColliders + 1 >= MAX_COLLIDERS)
 		{
@@ -274,11 +282,21 @@ namespace pkengine
 		return true;
 	}
 
-	void CPhysics::UnregisterCollider(CCollider* Collider)
+	void CPhysics::UnregisterColliderInternal(CCollider* Collider)
 	{
 		assert(NumColliders > 0);
 		--NumColliders;
 		Colliders.erase(Collider);
+	}
+
+	bool CPhysics::RegisterCollider(CCollider* Collider)
+	{
+		return Instance->RegisterColliderInternal(Collider);
+	}
+
+	void CPhysics::UnregisterCollider(CCollider* Collider)
+	{
+		Instance->UnregisterColliderInternal(Collider);
 	}
 
 	void CPhysics::AddToCollisionMap(CCollider* key, CCollider* collider, const FVector3& point, const FVector3& normal)

@@ -4,9 +4,7 @@
 
 namespace pkengine
 {
-	CInput::IKeySet CInput::DownKeys = CInput::IKeySet();
-	CInput::IKeySet CInput::HeldKeys = CInput::IKeySet();
-	CInput::IKeySet CInput::UpKeys = CInput::IKeySet();
+	CInput* CInput::Instance = nullptr;
 
 	bool CInput::Init(GLFWwindow* Window)
 	{
@@ -17,7 +15,13 @@ namespace pkengine
 		}
 
 		glfwSetKeyCallback(Window, GLKeyCallback);
+		Instance = new CInput();
 		return true;
+	}
+
+	void CInput::CleanUp()
+	{
+		delete Instance;
 	}
 
 	void CInput::Update()
@@ -27,16 +31,16 @@ namespace pkengine
 
 	void CInput::FlushInput(GLFWwindow* Window)
 	{
-		DownKeys.clear();
-		UpKeys.clear();
+		Instance->DownKeys.clear();
+		Instance->UpKeys.clear();
 
 		// Verify/Remove held keys
-		containers::uset<EKeyCode>::iterator it = HeldKeys.begin();
-		while (it != HeldKeys.end())
+		containers::uset<EKeyCode>::iterator it = Instance->HeldKeys.begin();
+		while (it != Instance->HeldKeys.end())
 		{
 			if (glfwGetKey(Window, int(*it)) == GLFW_RELEASE)
 			{
-				it = HeldKeys.erase(it);
+				it = Instance->HeldKeys.erase(it);
 				continue;
 			}
 
@@ -50,15 +54,15 @@ namespace pkengine
 
 		if (GLFWAction == GLFW_PRESS)
 		{
-			DownKeys.insert(KeyCode);
-			HeldKeys.insert(KeyCode);
-			UpKeys.erase(KeyCode);
+			Instance->DownKeys.insert(KeyCode);
+			Instance->HeldKeys.insert(KeyCode);
+			Instance->UpKeys.erase(KeyCode);
 		}
 		else if (GLFWAction == GLFW_RELEASE)
 		{
-			UpKeys.insert(KeyCode);
-			DownKeys.erase(KeyCode);
-			HeldKeys.erase(KeyCode);
+			Instance->UpKeys.insert(KeyCode);
+			Instance->DownKeys.erase(KeyCode);
+			Instance->HeldKeys.erase(KeyCode);
 		}
 	}
 }

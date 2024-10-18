@@ -3,11 +3,15 @@
 
 using namespace pkengine;
 
-int main()
+void RunGame()
 {
     CPKEngine Engine;
     Engine.CreateGame<ponggame::CPongGame>(1200, 800, "TestGame");
     Engine.RunGame();
+}
 
+int main()
+{
+    RunGame();
 	return 0;
 }
