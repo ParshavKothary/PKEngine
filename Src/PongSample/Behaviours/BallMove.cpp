@@ -29,6 +29,7 @@ namespace pkengine
 			CPaddle* paddle = dynamic_cast<CPaddle*>(collision.collider->GetOwner());
 			if (paddle != nullptr)
 			{
+				this->GetOwner()->GetGame<CPongGame>()->PlayPaddleBounceSound();
 				TakePlayerUpVel(paddle->GetUpDir());
 				return;
 			}

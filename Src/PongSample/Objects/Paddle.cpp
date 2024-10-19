@@ -2,6 +2,7 @@
 #include <Systems/PKInput.h>
 #include <Systems/PKTime.h>
 #include <Behaviours/BallMove.h>
+#include <PongGame.h>
 
 #define PADDLE_MAX_Y 12
 
@@ -82,6 +83,7 @@ namespace pkengine
 			Ball->TakePlayerUpVel(upDir);
 			Ball->SetIsGrabbed(false);
 			Ball = nullptr;
+			GetGame<CPongGame>()->PlayPaddleBounceSound();
 		}
 	}
 }

@@ -50,12 +50,17 @@ namespace pkengine
                 }
             }
 
-            GivePlayerBall(0);
+            // Load all sounds
+            Sounds.bounce = CAudioPlayer::Load("Assets/Sounds/bounce.wav");
+            Sounds.score = CAudioPlayer::Load("Assets/Sounds/score.wav");
+            Sounds.shoot = CAudioPlayer::Load("Assets/Sounds/shoot.wav");
+            Sounds.win = CAudioPlayer::Load("Assets/Sounds/win.wav");
 
-            clickSound = CAudioPlayer::Load("Assets/Sounds/click.wav");
+            // Start ball with player 1
+            GivePlayerBall(0);
         }
 
-        void CPongGame::Reset()
+        void CPongGame::ResetScore()
         {
             for (int ii = 0; ii < 2; ++ii)
             {
@@ -76,7 +81,8 @@ namespace pkengine
 
             if (scores[player] >= PONG_MAX_SCORE)
             {
-                Reset();
+                CAudioPlayer::Play(Sounds.win);
+                ResetScore();
             }
         }
 
@@ -89,13 +95,19 @@ namespace pkengine
         {
             if (player < 0)
             {
-                CAudioPlayer::Play(clickSound);
+                CAudioPlayer::Play(Sounds.bounce);
                 return;
             }
 
+            CAudioPlayer::Play(Sounds.score);
             assert(player == 0 || player == 1);
             IncrementScore(1 - player);
             GivePlayerBall(player);
+        }
+
+        void CPongGame::PlayPaddleBounceSound()
+        {
+            CAudioPlayer::Play(Sounds.shoot);
         }
     }
 }
